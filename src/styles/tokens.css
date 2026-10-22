@@ -1,0 +1,176 @@
+/*
+ * Tokens de diseño. Toda la interfaz toma colores, espacios, radios,
+ * tipografía y movimiento de aquí; los componentes no definen valores sueltos.
+ */
+:root {
+  color-scheme: light dark;
+
+  /* Paleta base */
+  --palette-coral: #ff6b6b;
+  --palette-yellow: #ffd93d;
+  --palette-green: #6bcb77;
+  --palette-blue: #4d96ff;
+  --palette-ivory: #fffbf0;
+  --palette-carbon: #2d2a32;
+
+  /* Superficies */
+  --color-bg: var(--palette-ivory);
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: #f6f1e4;
+  --color-overlay: rgb(45 42 50 / 0.32);
+
+  /* Texto (contraste ≥ 4.5:1 sobre fondo y superficie) */
+  --color-text: var(--palette-carbon);
+  --color-text-secondary: #5f5a66;
+  --color-text-on-accent: var(--palette-carbon);
+  --color-placeholder: #7d7883;
+
+  /* Separadores y controles */
+  --color-separator: rgb(45 42 50 / 0.12);
+  --color-separator-strong: rgb(45 42 50 / 0.2);
+  --color-fill: rgb(45 42 50 / 0.06);
+  --color-fill-hover: rgb(45 42 50 / 0.1);
+  --color-control-border: rgb(45 42 50 / 0.22);
+
+  /* Semánticos: base (rellenos), texto (sobre superficies claras) y suave (fondos de estado) */
+  --coral: var(--palette-coral);
+  --coral-text: #b3261e;
+  --coral-soft: rgb(255 107 107 / 0.14);
+  --coral-softer: rgb(255 107 107 / 0.1);
+  --yellow: var(--palette-yellow);
+  --yellow-text: #7a5c00;
+  --yellow-soft: rgb(255 217 61 / 0.22);
+  --green: var(--palette-green);
+  --green-text: #24713a;
+  --green-soft: rgb(107 203 119 / 0.16);
+  --blue: var(--palette-blue);
+  --blue-text: #1c5fc7;
+  --blue-soft: rgb(77 150 255 / 0.12);
+  --neutral-text: var(--color-text-secondary);
+  --neutral-soft: rgb(45 42 50 / 0.07);
+
+  --color-focus: var(--palette-blue);
+
+  /* Tipografía */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Segoe UI', sans-serif;
+  --text-large-title: 700 2rem/1.15 var(--font-sans);
+  --text-title-1: 700 1.625rem/1.2 var(--font-sans);
+  --text-title-2: 650 1.3125rem/1.25 var(--font-sans);
+  --text-title-3: 600 1.125rem/1.3 var(--font-sans);
+  --text-headline: 600 1.0625rem/1.35 var(--font-sans);
+  --text-body: 400 1.0625rem/1.45 var(--font-sans);
+  --text-callout: 400 1rem/1.4 var(--font-sans);
+  --text-subhead: 400 0.9375rem/1.4 var(--font-sans);
+  --text-footnote: 400 0.8125rem/1.35 var(--font-sans);
+  --text-caption: 500 0.75rem/1.3 var(--font-sans);
+  --tracking-tight: -0.02em;
+  --tracking-title: -0.015em;
+
+  /* Espacios (base 4 px) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --gutter: var(--space-4);
+
+  /* Radios */
+  --radius-xs: 8px;
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-pill: 999px;
+
+  /* Sombras apenas perceptibles */
+  --shadow-1: 0 1px 2px rgb(45 42 50 / 0.04), 0 0 0 1px rgb(45 42 50 / 0.04);
+  --shadow-2: 0 8px 24px rgb(45 42 50 / 0.08), 0 1px 3px rgb(45 42 50 / 0.06);
+  --shadow-3: 0 18px 48px rgb(45 42 50 / 0.14);
+
+  /* Tamaños */
+  --control-height: 44px;
+  --control-height-lg: 50px;
+  --tabbar-height: 56px;
+  --sidebar-width: 232px;
+  --sidebar-width-rail: 84px;
+  --sheet-width: 460px;
+  --content-max: 1680px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+
+  /* Movimiento */
+  --duration-fast: 150ms;
+  --duration: 200ms;
+  --duration-slow: 250ms;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Materiales */
+  --material-bar: rgb(255 251 240 / 0.86);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #1c1a1f;
+    --color-surface: #26232a;
+    --color-surface-raised: #2f2c34;
+    --color-surface-sunken: #211f25;
+    --color-overlay: rgb(0 0 0 / 0.55);
+
+    --color-text: #f5f1e8;
+    --color-text-secondary: #b5b0bb;
+    --color-text-on-accent: #1c1a1f;
+    --color-placeholder: #8e8994;
+
+    --color-separator: rgb(245 241 232 / 0.12);
+    --color-separator-strong: rgb(245 241 232 / 0.2);
+    --color-fill: rgb(245 241 232 / 0.07);
+    --color-fill-hover: rgb(245 241 232 / 0.12);
+    --color-control-border: rgb(245 241 232 / 0.22);
+
+    --coral-text: #ff8a8a;
+    --coral-soft: rgb(255 107 107 / 0.2);
+    --coral-softer: rgb(255 107 107 / 0.14);
+    --yellow-text: #ffd93d;
+    --yellow-soft: rgb(255 217 61 / 0.16);
+    --green-text: #7fd88a;
+    --green-soft: rgb(107 203 119 / 0.18);
+    --blue-text: #7ab0ff;
+    --blue-soft: rgb(77 150 255 / 0.2);
+    --neutral-soft: rgb(245 241 232 / 0.09);
+
+    --shadow-1: 0 0 0 1px rgb(245 241 232 / 0.06);
+    --shadow-2: 0 8px 24px rgb(0 0 0 / 0.35), 0 0 0 1px rgb(245 241 232 / 0.06);
+    --shadow-3: 0 18px 48px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(245 241 232 / 0.08);
+
+    --material-bar: rgb(28 26 31 / 0.86);
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: var(--space-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --gutter: var(--space-8);
+    --text-large-title: 700 1.875rem/1.15 var(--font-sans);
+    --text-body: 400 1rem/1.45 var(--font-sans);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration: 0ms;
+    --duration-slow: 0ms;
+  }
+}
