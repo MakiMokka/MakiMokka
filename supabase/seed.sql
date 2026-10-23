@@ -1,0 +1,3 @@
+-- Intentionally empty. Unified Mail never seeds users, mail accounts or
+-- messages: nothing may pretend to be a real connected account.
+-- Authorize your own user manually (see docs/DEPLOYMENT.md).

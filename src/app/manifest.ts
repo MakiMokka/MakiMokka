@@ -1,0 +1,27 @@
+import type { MetadataRoute } from 'next';
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    id: '/',
+    name: 'Unified Mail',
+    short_name: 'Mail',
+    description: 'Private email productivity app.',
+    start_url: '/inbox',
+    scope: '/',
+    display: 'standalone',
+    orientation: 'any',
+    background_color: '#f2f2f7',
+    theme_color: '#f2f2f7',
+    lang: 'en',
+    icons: [
+      { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+      { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+      {
+        src: '/icons/icon-maskable-512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'maskable',
+      },
+    ],
+  };
+}

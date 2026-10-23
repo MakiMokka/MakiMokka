@@ -1,0 +1,143 @@
+/**
+ * Explicit column lists for every table in the foundation schema.
+ *
+ * Queries select these lists instead of `*` so a new column (for example one
+ * added by a later migration) is never returned to callers by accident.
+ * tests/db/schema.test.ts asserts these lists match the migrated database
+ * exactly, which keeps src/lib/db/types.ts honest as well.
+ */
+export const TABLE_COLUMNS = {
+  'public.profiles': ['id', 'display_name', 'locale', 'time_zone', 'created_at', 'updated_at'],
+  'public.mail_accounts': [
+    'id',
+    'user_id',
+    'provider',
+    'provider_account_id',
+    'email_address',
+    'display_name',
+    'status',
+    'connected_at',
+    'created_at',
+    'updated_at',
+  ],
+  'public.message_metadata': [
+    'id',
+    'user_id',
+    'account_id',
+    'provider_message_id',
+    'provider_thread_id',
+    'internet_message_id',
+    'provider_folder_ids',
+    'subject',
+    'sender_name',
+    'sender_address',
+    'received_at',
+    'sent_at',
+    'is_read',
+    'is_flagged',
+    'is_draft',
+    'importance',
+    'has_attachments',
+    'search_vector',
+    'created_at',
+    'updated_at',
+  ],
+  'public.follow_ups': [
+    'id',
+    'user_id',
+    'message_id',
+    'title',
+    'note',
+    'due_at',
+    'status',
+    'completed_at',
+    'created_at',
+    'updated_at',
+  ],
+  'public.tasks': [
+    'id',
+    'user_id',
+    'source_message_id',
+    'title',
+    'notes',
+    'status',
+    'priority',
+    'due_at',
+    'completed_at',
+    'created_at',
+    'updated_at',
+  ],
+  'public.saved_views': [
+    'id',
+    'user_id',
+    'name',
+    'definition',
+    'position',
+    'created_at',
+    'updated_at',
+  ],
+  'app_private.authorized_users': ['user_id', 'note', 'created_at'],
+  'app_private.oauth_credentials': [
+    'account_id',
+    'user_id',
+    'ciphertext',
+    'nonce',
+    'auth_tag',
+    'key_version',
+    'granted_scopes',
+    'access_token_expires_at',
+    'created_at',
+    'updated_at',
+  ],
+  'app_private.sync_state': [
+    'id',
+    'user_id',
+    'account_id',
+    'resource',
+    'cursor',
+    'last_attempt_at',
+    'last_success_at',
+    'consecutive_failures',
+    'last_error_code',
+    'created_at',
+    'updated_at',
+  ],
+  'app_private.sync_jobs': [
+    'id',
+    'user_id',
+    'account_id',
+    'kind',
+    'status',
+    'priority',
+    'attempts',
+    'max_attempts',
+    'run_after',
+    'locked_at',
+    'locked_by',
+    'finished_at',
+    'last_error_code',
+    'created_at',
+    'updated_at',
+  ],
+  'audit.events': [
+    'id',
+    'occurred_at',
+    'user_id',
+    'actor',
+    'event_type',
+    'target_type',
+    'target_id',
+    'request_id',
+    'metadata',
+  ],
+} as const;
+
+export type QualifiedTable = keyof typeof TABLE_COLUMNS;
+
+/** Comma-separated column list for PostgREST `.select()`. */
+export function selectList<T extends QualifiedTable>(
+  table: T,
+  omit: readonly (typeof TABLE_COLUMNS)[T][number][] = [],
+): string {
+  return TABLE_COLUMNS[table].filter((column) => !omit.includes(column)).join(',');
+}
