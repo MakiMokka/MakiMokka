@@ -7,6 +7,7 @@ import { MessageList } from '@/components/message-list';
 import { PageBody, PageHeader } from '@/components/page-header';
 import { listMailAccounts, listRecentMessages } from '@/lib/db/queries';
 import { getPageContext } from '@/lib/page-context';
+import { ui } from '@/components/styles';
 
 export const metadata: Metadata = { title: 'Inbox' };
 
@@ -25,7 +26,7 @@ export default async function InboxPage() {
         title={t.inbox.noAccountsTitle}
         body={t.inbox.noAccountsBody}
         action={
-          <Link href="/settings/accounts" className="text-tint text-[17px]">
+          <Link href="/settings/accounts" className={ui.link}>
             {t.inbox.goToAccounts}
           </Link>
         }

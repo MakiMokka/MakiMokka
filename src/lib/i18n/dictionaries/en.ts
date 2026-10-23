@@ -1,6 +1,6 @@
 export const en = {
   app: {
-    name: 'Unified Mail',
+    name: 'OVYRA',
     version: 'Version {version}',
     skipToContent: 'Skip to content',
   },
@@ -24,7 +24,7 @@ export const en = {
     title: 'Inbox',
     noAccountsTitle: 'No mail accounts connected',
     noAccountsBody:
-      'Unified Mail only shows mail from accounts you connect. Connecting Outlook and Gmail accounts is not available yet, so there is nothing to show.',
+      'OVYRA only shows mail from accounts you connect. Connecting Outlook and Gmail accounts is not available yet, so there is nothing to show.',
     goToAccounts: 'Mail accounts',
     emptyTitle: 'No messages',
     emptyBody: 'No messages have been synced from your connected accounts yet.',
@@ -105,7 +105,7 @@ export const en = {
   },
   language: {
     title: 'Language',
-    description: 'Choose the language used throughout Unified Mail.',
+    description: 'Choose the language used throughout OVYRA.',
     english: 'English',
     spanish: 'Español',
   },
@@ -137,7 +137,7 @@ export const en = {
     privacyBodies: 'Message bodies and attachments are never stored.',
     privacyCredentials:
       'Provider credentials are encrypted on the server and never sent to this device.',
-    privacyAi: 'Unified Mail does not use AI features.',
+    privacyAi: 'OVYRA does not use AI features.',
   },
   login: {
     title: 'Sign in',

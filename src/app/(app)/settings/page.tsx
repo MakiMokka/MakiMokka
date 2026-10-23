@@ -14,22 +14,18 @@ export default async function SettingsPage() {
     <>
       <PageHeader title={t.settings.title} />
       <PageBody>
-        <div className="bg-cell flex items-center gap-4 rounded-[10px] px-4 py-4">
-          {/* eslint-disable-next-line @next/next/no-img-element -- static same-origin icon */}
-          <img src="/icons/icon-192.png" alt="" width={56} height={56} className="rounded-[13px]" />
-          <div className="min-w-0">
-            <Brand name={t.app.name} versionTemplate={t.app.version} />
-            {auth.email ? (
-              <p className="text-secondary-label truncate text-[13px]">{auth.email}</p>
-            ) : null}
-          </div>
+        <div className="surface-reading rounded-surface identity-aura overflow-hidden px-5 py-5">
+          <Brand versionTemplate={t.app.version} />
+          {auth.email ? (
+            <p className="text-fg-muted text-subhead mt-3 truncate">{auth.email}</p>
+          ) : null}
         </div>
         <GroupedList header={t.settings.sectionAccount}>
           <ListRow
             href="/settings/profile"
             label={t.settings.profile}
             leading={
-              <IconBadge color="bg-[#8e8e93]">
+              <IconBadge>
                 <PersonIcon />
               </IconBadge>
             }
@@ -38,7 +34,7 @@ export default async function SettingsPage() {
             href="/settings/accounts"
             label={t.settings.mailAccounts}
             leading={
-              <IconBadge color="bg-[#007aff]">
+              <IconBadge>
                 <EnvelopeIcon />
               </IconBadge>
             }
@@ -47,7 +43,7 @@ export default async function SettingsPage() {
             href="/settings/security"
             label={t.settings.security}
             leading={
-              <IconBadge color="bg-[#34c759]">
+              <IconBadge>
                 <LockIcon />
               </IconBadge>
             }
@@ -59,8 +55,8 @@ export default async function SettingsPage() {
             label={t.settings.language}
             detail={locale === 'es' ? t.language.spanish : t.language.english}
             leading={
-              <IconBadge color="bg-[#5856d6]">
-                <span className="text-[13px] font-bold">Aa</span>
+              <IconBadge>
+                <span className="text-subhead font-display font-bold">Aa</span>
               </IconBadge>
             }
           />
@@ -70,7 +66,7 @@ export default async function SettingsPage() {
             href="/settings/about"
             label={t.settings.about}
             leading={
-              <IconBadge color="bg-[#8e8e93]">
+              <IconBadge>
                 <InfoIcon />
               </IconBadge>
             }

@@ -3,7 +3,9 @@
 ## Stack
 
 - **Next.js 16** App Router, React 19, TypeScript (strict + `noUncheckedIndexedAccess`).
-- **Tailwind CSS 4** with iOS system color tokens (light/dark) in `src/app/globals.css`.
+- **Tailwind CSS 4** with the OVYRA design system: tokens in `src/styles/tokens.css`, Tailwind
+  mapping, materials and type scale in `src/app/globals.css`, shared component styles in
+  `src/components/styles.ts` (see `docs/brand/IDENTITY.md`).
 - **Supabase Auth** (email one-time code) and **Postgres** (RLS everywhere).
 - **Vercel** hosting. Cache Components/PPR are deliberately off: every page is private and
   rendered per request under a nonce-based CSP.

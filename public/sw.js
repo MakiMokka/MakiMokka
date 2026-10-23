@@ -1,5 +1,5 @@
 /*
- * Unified Mail service worker.
+ * OVYRA service worker.
  *
  * Privacy rule: never cache authenticated pages, API responses or anything
  * that could contain mail data. The only cached resources are the static

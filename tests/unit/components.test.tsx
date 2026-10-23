@@ -13,9 +13,10 @@ vi.mock('next/navigation', () => ({ usePathname: () => '/settings/accounts' }));
 afterEach(cleanup);
 
 describe('Brand', () => {
-  it('shows the version directly beneath the product name', () => {
-    render(<Brand name="Unified Mail" versionTemplate="Version {version}" />);
-    const name = screen.getByText('Unified Mail');
+  it('shows the version directly beneath the provisional wordmark', () => {
+    render(<Brand versionTemplate="Version {version}" />);
+    const name = screen.getByText('OVYRA');
+    expect(name.getAttribute('data-asset-status')).toBe('provisional');
     const version = screen.getByTestId('app-version');
     expect(version.textContent).toBe(`Version ${APP_VERSION}`);
     expect(name.nextElementSibling).toBe(version);

@@ -1,4 +1,6 @@
-# Unified Mail
+# OVYRA
+
+_(Repository and package name: `unified-mail`, the Phase 1 working name.)_
 
 A private, iPhone-first email productivity PWA. Single user today, built so more users can be
 added securely later. **Phase 1 — Foundation** (v0.1.0): authentication, allowlisted access,
@@ -42,3 +44,4 @@ role) and Vercel is in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 - [Deployment](docs/DEPLOYMENT.md)
 - [Security model & threat model](docs/SECURITY.md)
 - [Implementation status](docs/STATUS.md)
+- Brand: [identity & usage rules](docs/brand/IDENTITY.md) · [asset inventory](docs/brand/ASSETS.md) · [accessibility review](docs/brand/ACCESSIBILITY.md)

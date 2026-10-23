@@ -15,16 +15,19 @@ export default async function AboutPage() {
       <PageHeader title={t.about.title} back={{ href: '/settings', label: t.settings.title }} />
       <PageBody>
         <div className="py-2">
-          <Brand name={t.app.name} versionTemplate={t.app.version} size="lg" />
+          <Brand versionTemplate={t.app.version} size="lg" />
         </div>
         <GroupedList>
           <ListRow label={t.about.version} detail={APP_VERSION} />
           {APP_COMMIT ? <ListRow label={t.about.build} detail={APP_COMMIT} /> : null}
         </GroupedList>
         <GroupedList header={t.about.privacyHeader}>
-          <ListRow wrap label={<span className="text-[15px]">{t.about.privacyBodies}</span>} />
-          <ListRow wrap label={<span className="text-[15px]">{t.about.privacyCredentials}</span>} />
-          <ListRow wrap label={<span className="text-[15px]">{t.about.privacyAi}</span>} />
+          <ListRow wrap label={<span className="text-callout">{t.about.privacyBodies}</span>} />
+          <ListRow
+            wrap
+            label={<span className="text-callout">{t.about.privacyCredentials}</span>}
+          />
+          <ListRow wrap label={<span className="text-callout">{t.about.privacyAi}</span>} />
         </GroupedList>
       </PageBody>
     </>

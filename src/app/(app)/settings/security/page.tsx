@@ -9,6 +9,7 @@ import type { Dictionary } from '@/lib/i18n/dictionaries';
 import { formatDateTime } from '@/lib/i18n/format';
 import { logger } from '@/lib/logging/logger';
 import { getPageContext } from '@/lib/page-context';
+import { ui } from '@/components/styles';
 
 export const metadata: Metadata = { title: 'Security' };
 
@@ -45,19 +46,13 @@ export default async function SecurityPage() {
         <section className="space-y-3">
           <form action={signOutAction}>
             <input type="hidden" name="scope" value="local" />
-            <button
-              type="submit"
-              className="bg-cell text-destructive min-h-11 w-full rounded-[10px] text-[17px]"
-            >
+            <button type="submit" className={ui.buttonDestructive}>
               {t.security.signOut}
             </button>
           </form>
           <form action={signOutAction}>
             <input type="hidden" name="scope" value="global" />
-            <button
-              type="submit"
-              className="bg-cell text-destructive min-h-11 w-full rounded-[10px] text-[17px]"
-            >
+            <button type="submit" className={ui.buttonDestructive}>
               {t.security.signOutEverywhere}
             </button>
           </form>
@@ -67,20 +62,16 @@ export default async function SecurityPage() {
             <ListRow
               wrap
               label={
-                <span className="text-secondary-label text-[15px]">
-                  {t.security.activityUnavailable}
-                </span>
+                <span className="text-fg-muted text-callout">{t.security.activityUnavailable}</span>
               }
             />
           ) : activity.status === 'error' ? (
             <ListRow
-              label={<span className="text-secondary-label text-[15px]">{t.common.loadError}</span>}
+              label={<span className="text-fg-muted text-callout">{t.common.loadError}</span>}
             />
           ) : activity.events.length === 0 ? (
             <ListRow
-              label={
-                <span className="text-secondary-label text-[15px]">{t.security.activityEmpty}</span>
-              }
+              label={<span className="text-fg-muted text-callout">{t.security.activityEmpty}</span>}
             />
           ) : (
             activity.events.map((event) => (

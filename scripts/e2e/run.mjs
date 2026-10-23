@@ -106,6 +106,7 @@ async function main() {
         NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_e2e_local_only',
         AUTH_ALLOWED_USER_IDS: owner.id,
         DATABASE_URL: stack.workerUri,
+        DESIGN_PREVIEW: '1',
       },
       'next',
       output,
@@ -266,9 +267,48 @@ async function main() {
     const desktopPage = await desktop.newPage();
     await desktopPage.goto(`${APP}/inbox`);
     const sidebar = desktopPage.locator('aside');
-    await sidebar.getByText('Unified Mail').waitFor();
+    await sidebar.getByText('OVYRA').waitFor();
     await sidebar.getByText('Version 0.1.0').waitFor();
     await desktopPage.screenshot({ path: path.join(OUT, '10-inbox-desktop.png') });
+    await desktop.close();
+  });
+
+  await step('dark mode keeps the brand character (system preference)', async () => {
+    await page.emulateMedia({ colorScheme: 'dark' });
+    for (const [route, shot] of [
+      ['/inbox', '11-inbox-dark-iphone'],
+      ['/settings', '12-settings-dark-iphone'],
+    ]) {
+      await page.goto(`${APP}${route}`);
+      const background = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+      assert.equal(background, 'rgb(11, 16, 37)', 'dark canvas #0B1025');
+      await page.screenshot({ path: path.join(OUT, `${shot}.png`) });
+    }
+    await page.emulateMedia({ colorScheme: 'light' });
+    await page.goto(`${APP}/inbox`);
+    const background = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+    assert.equal(background, 'rgb(248, 249, 255)', 'light canvas #F8F9FF');
+  });
+
+  await step('design-system preview renders neutral content outside navigation', async () => {
+    const links = await page
+      .locator('nav a')
+      .evaluateAll((items) => items.map((a) => a.getAttribute('href')));
+    assert.ok(!links.includes('/design-system'), 'not linked from navigation');
+    await page.goto(`${APP}/design-system`);
+    await page.getByTestId('design-system').waitFor();
+    await page.screenshot({ path: path.join(OUT, '13-design-system-iphone.png'), fullPage: true });
+    const desktop = await browser.newContext({
+      viewport: { width: 1280, height: 800 },
+      storageState: await context.storageState(),
+    });
+    const desktopPage = await desktop.newPage();
+    await desktopPage.goto(`${APP}/design-system`);
+    await desktopPage.getByTestId('design-system').waitFor();
+    await desktopPage.screenshot({
+      path: path.join(OUT, '14-design-system-desktop.png'),
+      fullPage: true,
+    });
     await desktop.close();
   });
 

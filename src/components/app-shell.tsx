@@ -21,13 +21,13 @@ export function AppShell({ t, children }: { t: Dictionary; children: ReactNode }
     <div className="min-h-dvh md:flex">
       <a
         href="#main"
-        className="bg-tint sr-only z-50 rounded-lg px-4 py-2 text-white focus:not-sr-only focus:fixed focus:top-2 focus:left-2"
+        className="bg-accent-strong text-on-accent rounded-control sr-only z-50 px-4 py-2 focus:not-sr-only focus:fixed focus:top-2 focus:left-2"
       >
         {t.app.skipToContent}
       </a>
-      <aside className="border-separator bg-cell pt-safe pl-safe hidden w-64 shrink-0 border-r-[0.5px] md:sticky md:top-0 md:flex md:h-dvh md:flex-col">
-        <div className="px-5 pt-6 pb-5">
-          <Brand name={t.app.name} versionTemplate={t.app.version} />
+      <aside className="border-line surface-reading pt-safe pl-safe hidden w-64 shrink-0 border-r-[0.5px] md:sticky md:top-0 md:flex md:h-dvh md:flex-col">
+        <div className="px-5 pt-8 pb-6">
+          <Brand versionTemplate={t.app.version} />
         </div>
         <div className="px-3">
           <AppNav variant="sidebar" labels={labels} ariaLabel={t.nav.label} />

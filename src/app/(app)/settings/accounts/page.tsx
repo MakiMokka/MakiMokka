@@ -24,7 +24,7 @@ export default async function MailAccountsPage() {
         {!accounts.ok ? (
           <ErrorState icon={<WarningIcon />} message={t.common.loadError} />
         ) : accounts.data.length === 0 ? (
-          <div className="bg-cell rounded-[10px]">
+          <div className="surface-reading rounded-surface">
             <EmptyState
               testId="accounts-empty"
               icon={<EnvelopeIcon />}

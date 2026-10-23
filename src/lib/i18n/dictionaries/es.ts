@@ -2,7 +2,7 @@ import type { Dictionary } from './en';
 
 export const es: Dictionary = {
   app: {
-    name: 'Unified Mail',
+    name: 'OVYRA',
     version: 'Versión {version}',
     skipToContent: 'Ir al contenido',
   },
@@ -26,7 +26,7 @@ export const es: Dictionary = {
     title: 'Bandeja de entrada',
     noAccountsTitle: 'No hay cuentas de correo conectadas',
     noAccountsBody:
-      'Unified Mail solo muestra correo de las cuentas que conectes. Todavía no es posible conectar cuentas de Outlook ni de Gmail, así que no hay nada que mostrar.',
+      'OVYRA solo muestra correo de las cuentas que conectes. Todavía no es posible conectar cuentas de Outlook ni de Gmail, así que no hay nada que mostrar.',
     goToAccounts: 'Cuentas de correo',
     emptyTitle: 'No hay mensajes',
     emptyBody: 'Aún no se han sincronizado mensajes de tus cuentas conectadas.',
@@ -107,7 +107,7 @@ export const es: Dictionary = {
   },
   language: {
     title: 'Idioma',
-    description: 'Elige el idioma de Unified Mail.',
+    description: 'Elige el idioma de OVYRA.',
     english: 'English',
     spanish: 'Español',
   },
@@ -139,7 +139,7 @@ export const es: Dictionary = {
     privacyBodies: 'Nunca se guardan el contenido de los mensajes ni los archivos adjuntos.',
     privacyCredentials:
       'Las credenciales de los proveedores se cifran en el servidor y nunca se envían a este dispositivo.',
-    privacyAi: 'Unified Mail no usa funciones de IA.',
+    privacyAi: 'OVYRA no usa funciones de IA.',
   },
   login: {
     title: 'Iniciar sesión',

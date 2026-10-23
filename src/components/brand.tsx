@@ -1,26 +1,20 @@
 import { interpolate } from '@/lib/i18n/config';
 import { APP_VERSION } from '@/lib/version';
 
-/** Product name with the version number directly beneath it. */
+import { Wordmark } from './wordmark';
+
+/** Product wordmark with the version number directly beneath it. */
 export function Brand({
-  name,
   versionTemplate,
   size = 'md',
 }: {
-  name: string;
   versionTemplate: string;
   size?: 'md' | 'lg';
 }) {
   return (
-    <div className={size === 'lg' ? 'text-center' : undefined}>
-      <p
-        className={
-          size === 'lg' ? 'text-[28px] font-bold tracking-tight' : 'text-[17px] font-semibold'
-        }
-      >
-        {name}
-      </p>
-      <p className="text-secondary-label text-[13px]" data-testid="app-version">
+    <div className={size === 'lg' ? 'flex flex-col items-center text-center' : 'flex flex-col'}>
+      <Wordmark size={size === 'lg' ? 'lg' : 'md'} />
+      <p className="text-fg-muted text-caption mt-1" data-testid="app-version">
         {interpolate(versionTemplate, { version: APP_VERSION })}
       </p>
     </div>

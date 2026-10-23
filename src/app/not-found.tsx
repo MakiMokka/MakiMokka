@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { EmptyState } from '@/components/empty-state';
 import { WarningIcon } from '@/components/icons';
 import { getI18n } from '@/lib/i18n/server';
+import { ui } from '@/components/styles';
 
 export default async function NotFound() {
   const { t } = await getI18n();
@@ -13,7 +14,7 @@ export default async function NotFound() {
         title={t.errors.notFoundTitle}
         body={t.errors.notFoundBody}
         action={
-          <Link href="/inbox" className="text-tint text-[17px]">
+          <Link href="/inbox" className={ui.link}>
             {t.errors.home}
           </Link>
         }

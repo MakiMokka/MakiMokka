@@ -14,7 +14,7 @@ export function LanguageSwitch({
   return (
     <form action={setLocaleAction} className="flex justify-center">
       <input type="hidden" name="returnTo" value={returnTo} />
-      <div className="bg-fill inline-flex rounded-[9px] p-0.5" role="group">
+      <div className="bg-surface-2 inline-flex rounded-full p-1" role="group">
         {(Object.keys(labels) as AppLocale[]).map((value) => (
           <button
             key={value}
@@ -23,8 +23,8 @@ export function LanguageSwitch({
             value={value}
             aria-pressed={value === locale}
             lang={value}
-            className={`min-h-9 rounded-[7px] px-4 text-[13px] font-medium ${
-              value === locale ? 'bg-cell shadow-sm' : 'text-secondary-label'
+            className={`text-subhead min-h-9 rounded-full px-4 font-medium ${
+              value === locale ? 'surface-control text-fg' : 'text-fg-muted'
             }`}
           >
             {labels[value]}

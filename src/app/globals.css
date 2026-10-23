@@ -1,60 +1,58 @@
 @import 'tailwindcss';
+@import '../styles/tokens.css';
 
 /*
- * iOS system colors (Human Interface Guidelines), light and dark.
- * Components use the semantic Tailwind tokens below, never raw hex values.
+ * OVYRA visual system. Components use only the semantic utilities defined
+ * here (colors, type scale, radii, materials) — never raw hex values.
+ * Spacing uses Tailwind's 4px scale restricted to the brand steps:
+ * 1, 2, 3, 4, 5, 6, 8, 10  →  4, 8, 12, 16, 20, 24, 32, 40 px.
  */
-:root {
-  --system-background: #ffffff;
-  --grouped-background: #f2f2f7;
-  --grouped-cell: #ffffff;
-  --label: #000000;
-  --secondary-label: rgb(60 60 67 / 0.6);
-  --tertiary-label: rgb(60 60 67 / 0.3);
-  --separator: rgb(60 60 67 / 0.29);
-  --fill: rgb(120 120 128 / 0.12);
-  --tint: #007aff;
-  --destructive: #ff3b30;
-  --success: #34c759;
-  --bar: rgb(249 249 249 / 0.82);
-  color-scheme: light dark;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --system-background: #000000;
-    --grouped-background: #000000;
-    --grouped-cell: #1c1c1e;
-    --label: #ffffff;
-    --secondary-label: rgb(235 235 245 / 0.6);
-    --tertiary-label: rgb(235 235 245 / 0.3);
-    --separator: rgb(84 84 88 / 0.6);
-    --fill: rgb(118 118 128 / 0.24);
-    --tint: #0a84ff;
-    --destructive: #ff453a;
-    --success: #30d158;
-    --bar: rgb(22 22 23 / 0.82);
-  }
-}
-
 @theme inline {
-  --color-background: var(--system-background);
-  --color-grouped: var(--grouped-background);
-  --color-cell: var(--grouped-cell);
-  --color-label: var(--label);
-  --color-secondary-label: var(--secondary-label);
-  --color-tertiary-label: var(--tertiary-label);
-  --color-separator: var(--separator);
-  --color-fill: var(--fill);
-  --color-tint: var(--tint);
-  --color-destructive: var(--destructive);
+  --color-canvas: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-secondary);
+  --color-control: var(--surface-control);
+  --color-fg: var(--text-primary);
+  --color-fg-muted: var(--text-secondary);
+  --color-fg-subtle: var(--text-tertiary);
+  --color-line: var(--border-subtle);
+  --color-line-control: var(--border-control);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-on-accent: var(--on-accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
   --color-success: var(--success);
-  --color-bar: var(--bar);
-  --font-sans:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, Roboto,
-    'Helvetica Neue', Arial, sans-serif;
+
+  --font-sans: var(--family-text);
+  --font-display: var(--family-display);
+
+  --radius-surface: var(--shape-surface);
+  --radius-container: var(--shape-container);
+  --radius-control: var(--shape-control);
+  --radius-inner: var(--shape-inner);
+
+  /* Type scale (pt ≈ CSS px at 1x): 32 · 28 · 22 · 17 · 15 · 14 · 12 */
+  --text-display: 32px;
+  --text-display--line-height: 38px;
+  --text-display--letter-spacing: -0.02em;
+  --text-title: 28px;
+  --text-title--line-height: 34px;
+  --text-title--letter-spacing: -0.015em;
+  --text-headline: 22px;
+  --text-headline--line-height: 28px;
+  --text-headline--letter-spacing: -0.01em;
+  --text-body: 17px;
+  --text-body--line-height: 24px;
+  --text-callout: 15px;
+  --text-callout--line-height: 21px;
+  --text-subhead: 14px;
+  --text-subhead--line-height: 19px;
+  --text-caption: 12px;
+  --text-caption--line-height: 16px;
 }
 
+/* --- Layout helpers -------------------------------------------------------- */
 @utility pt-safe {
   padding-top: env(safe-area-inset-top);
 }
@@ -67,13 +65,64 @@
 @utility pr-safe {
   padding-right: env(safe-area-inset-right);
 }
-@utility px-safe {
-  padding-left: max(1rem, env(safe-area-inset-left));
-  padding-right: max(1rem, env(safe-area-inset-right));
+/* 20pt iPhone side margin, never less than the safe area. */
+@utility px-gutter {
+  padding-left: max(var(--gutter), env(safe-area-inset-left));
+  padding-right: max(var(--gutter), env(safe-area-inset-right));
 }
-/* Content clearance for the fixed tab bar (49pt, as on iOS) plus home indicator. */
+/* Content clearance for the fixed tab bar (56px) plus home indicator. */
 @utility pb-tabbar {
-  padding-bottom: calc(49px + env(safe-area-inset-bottom) + 1.5rem);
+  padding-bottom: calc(56px + env(safe-area-inset-bottom) + var(--space-6));
+}
+
+/* --- Materials (three levels) ---------------------------------------------- */
+/* 1. Reading: clean, opaque, flat. */
+@utility surface-reading {
+  background-color: var(--surface);
+}
+/* 2. Control: moderate translucency and elevation. Solid when the user
+ *    prefers reduced transparency or more contrast (see tokens.css). */
+@utility surface-control {
+  background-color: var(--surface-control);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(160%);
+  box-shadow:
+    inset 0 0.5px 0 var(--control-highlight),
+    var(--shadow-control);
+}
+/* 3. Identity: brand gradient, for brand elements only. */
+@utility surface-identity {
+  background-image: var(--brand-gradient);
+}
+@utility text-brand-gradient {
+  background-image: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* Soft, out-of-focus brand light behind identity moments (sign-in). */
+@utility identity-aura {
+  position: relative;
+  isolation: isolate;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -20% -30% auto;
+    height: 70%;
+    z-index: -1;
+    background:
+      radial-gradient(40% 50% at 30% 40%, var(--brand-blue), transparent 70%),
+      radial-gradient(35% 45% at 55% 35%, var(--brand-violet), transparent 70%),
+      radial-gradient(30% 40% at 72% 55%, var(--brand-pink), transparent 70%),
+      radial-gradient(25% 35% at 85% 40%, var(--brand-coral), transparent 70%);
+    filter: blur(48px);
+    opacity: var(--identity-glow-opacity);
+    pointer-events: none;
+  }
+}
+@utility hairline {
+  border-width: 0.5px;
+  border-color: var(--border-subtle);
 }
 
 @layer base {
@@ -84,16 +133,29 @@
   }
 
   body {
-    background: var(--grouped-background);
-    color: var(--label);
-    font-family: var(--font-sans);
+    background: var(--background);
+    color: var(--text-primary);
+    font-family: var(--family-text);
+    font-size: 17px;
+    line-height: 24px;
     -webkit-font-smoothing: antialiased;
     overscroll-behavior-y: none;
   }
 
+  h1,
+  h2,
+  h3 {
+    font-family: var(--family-display);
+  }
+
   :focus-visible {
-    outline: 2px solid var(--tint);
+    outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+    color: var(--text-primary);
   }
 
   /* iOS zooms inputs with font-size < 16px; keep form controls at 16px+. */

@@ -16,12 +16,14 @@ export function GroupedList({
   return (
     <section>
       {header ? (
-        <h2 className="text-secondary-label px-4 pb-1.5 text-[13px] uppercase">{header}</h2>
+        <h2 className="text-fg-muted text-caption px-4 pb-2 font-semibold tracking-[0.06em] uppercase">
+          {header}
+        </h2>
       ) : null}
-      <ul className="bg-cell divide-separator [&>li+li]:border-separator overflow-hidden rounded-[10px] [&>li+li]:border-t-[0.5px]">
+      <ul className="surface-reading rounded-container [&>li+li]:border-line overflow-hidden [&>li+li]:border-t-[0.5px]">
         {children}
       </ul>
-      {footer ? <div className="text-secondary-label px-4 pt-1.5 text-[13px]">{footer}</div> : null}
+      {footer ? <div className="text-fg-muted text-subhead px-4 pt-2">{footer}</div> : null}
     </section>
   );
 }
@@ -55,23 +57,21 @@ export function ListRow({
       {subtitle ? (
         <span className="min-w-0 flex-1">
           <span className="block">{label}</span>
-          <span className="text-secondary-label block text-[13px]">{subtitle}</span>
+          <span className="text-fg-muted text-subhead block">{subtitle}</span>
         </span>
       ) : (
         <span className={`min-w-0 flex-1 ${wrap ? '' : 'truncate'}`}>{label}</span>
       )}
-      {detail ? <span className="text-secondary-label truncate text-[15px]">{detail}</span> : null}
+      {detail ? <span className="text-fg-muted text-callout truncate">{detail}</span> : null}
       {trailing}
-      {href && !disabled ? (
-        <ChevronRightIcon className="text-tertiary-label size-4 shrink-0" />
-      ) : null}
+      {href && !disabled ? <ChevronRightIcon className="text-fg-subtle size-4 shrink-0" /> : null}
     </>
   );
-  const className = `flex min-h-11 items-center gap-3 px-4 py-2.5 text-[17px] ${disabled ? 'text-tertiary-label' : ''}`;
+  const className = `text-body flex min-h-12 items-center gap-3 px-4 py-3 ${disabled ? 'text-fg-subtle' : 'text-fg'}`;
   return (
     <li>
       {href && !disabled ? (
-        <Link href={href} className={`${className} active:bg-fill`}>
+        <Link href={href} className={`${className} active:bg-surface-2 hover:bg-surface-2`}>
           {content}
         </Link>
       ) : (
@@ -83,11 +83,10 @@ export function ListRow({
   );
 }
 
-export function IconBadge({ color, children }: { color: string; children: ReactNode }) {
+/** Leading glyph tile for settings rows: one restrained accent tone, not a rainbow. */
+export function IconBadge({ children }: { children: ReactNode }) {
   return (
-    <span
-      className={`flex size-[29px] items-center justify-center rounded-[7px] text-white ${color} [&>svg]:size-[18px]`}
-    >
+    <span className="bg-accent-soft text-accent rounded-inner flex size-8 items-center justify-center [&>svg]:size-[18px]">
       {children}
     </span>
   );

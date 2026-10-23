@@ -1,0 +1,149 @@
+/*
+ * OVYRA — design tokens v1.0 (single source of truth).
+ *
+ * Brand palette values come from the approved brand brief. Semantic values
+ * marked "adjusted" were moved the minimum amount needed to meet WCAG 2.2 AA;
+ * tests/unit/contrast.test.ts parses this file and fails if any declared
+ * pair drops below its threshold. See docs/brand/IDENTITY.md.
+ *
+ * Theming: light by default, dark via prefers-color-scheme, and either theme
+ * can be forced on any subtree with data-theme="light" | "dark".
+ */
+
+:root,
+[data-theme='light'] {
+  /* Brand palette (identity only; never as small-text color on its own). */
+  --brand-violet: #735bff;
+  --brand-blue: #458aff;
+  --brand-pink: #f04bba;
+  --brand-coral: #ff9673;
+  --brand-gradient: linear-gradient(130deg, #458aff 0%, #735bff 36%, #f04bba 70%, #ff9673 100%);
+
+  /* Surfaces */
+  --background: #f8f9ff;
+  --surface: #ffffff;
+  --surface-secondary: #f0f2fa;
+  --surface-control: rgb(255 255 255 / 0.72);
+  --surface-control-solid: #ffffff;
+
+  /* Text */
+  --text-primary: #11162b;
+  --text-secondary: #626c87; /* adjusted from #65708B: 4.43 → 4.68 on surface-secondary */
+  --text-tertiary: #818ca6; /* placeholders, disabled */
+
+  /* Lines */
+  --border-subtle: #e4e8f2; /* decorative separators only */
+  --border-control: #7f8bb0; /* input boundaries, ≥ 3:1 */
+
+  /* Interaction */
+  --accent: #664cff; /* adjusted violet for text, icons, links: ≥ 4.5 on all light surfaces */
+  --accent-strong: #664cff; /* filled buttons; white text ≥ 4.5 */
+  --on-accent: #ffffff;
+  --accent-soft: #f1efff; /* adjusted: keeps accent text ≥ 4.5 */
+  --focus-ring: #664cff;
+
+  /* Status */
+  --danger: #d61e24;
+  --success: #177c46;
+
+  /* Elevation (control level only; reading surfaces stay flat) */
+  --shadow-control: 0 1px 2px rgb(17 22 43 / 0.04), 0 8px 24px rgb(17 22 43 / 0.06);
+  --control-highlight: rgb(255 255 255 / 0.6);
+  --identity-glow-opacity: 0.22;
+
+  color-scheme: light;
+}
+
+/* Dark values are declared twice (system preference and explicit attribute);
+ * keep both blocks identical. The contrast test checks both. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --background: #0b1025;
+    --surface: #151c36;
+    --surface-secondary: #202944;
+    --surface-control: rgb(21 28 54 / 0.72);
+    --surface-control-solid: #151c36;
+    --text-primary: #f8f9ff;
+    --text-secondary: #abb7d3;
+    --text-tertiary: #6b7593;
+    --border-subtle: #303954;
+    --border-control: #63719f;
+    --accent: #9481ff; /* adjusted: brand violet is 3.7 on dark surfaces */
+    --accent-strong: #664cff;
+    --on-accent: #ffffff;
+    --accent-soft: #272552;
+    --focus-ring: #9481ff;
+    --danger: #ff6b70;
+    --success: #3dd68c;
+    --shadow-control: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.28);
+    --control-highlight: rgb(255 255 255 / 0.06);
+    --identity-glow-opacity: 0.16;
+    color-scheme: dark;
+  }
+}
+
+[data-theme='dark'] {
+  --background: #0b1025;
+  --surface: #151c36;
+  --surface-secondary: #202944;
+  --surface-control: rgb(21 28 54 / 0.72);
+  --surface-control-solid: #151c36;
+  --text-primary: #f8f9ff;
+  --text-secondary: #abb7d3;
+  --text-tertiary: #6b7593;
+  --border-subtle: #303954;
+  --border-control: #63719f;
+  --accent: #9481ff;
+  --accent-strong: #664cff;
+  --on-accent: #ffffff;
+  --accent-soft: #272552;
+  --focus-ring: #9481ff;
+  --danger: #ff6b70;
+  --success: #3dd68c;
+  --shadow-control: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.28);
+  --control-highlight: rgb(255 255 255 / 0.06);
+  --identity-glow-opacity: 0.16;
+  color-scheme: dark;
+}
+
+/* Accessibility preferences override materials, never the brand palette. */
+@media (prefers-reduced-transparency: reduce) {
+  :root,
+  [data-theme] {
+    --surface-control: var(--surface-control-solid);
+    --identity-glow-opacity: 0;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root,
+  [data-theme] {
+    --border-subtle: var(--border-control);
+    --surface-control: var(--surface-control-solid);
+    --identity-glow-opacity: 0;
+  }
+}
+
+/* Geometry, type and spacing (theme-independent). */
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --gutter: 20px;
+
+  --shape-surface: 24px;
+  --shape-container: 16px;
+  --shape-control: 12px;
+  --shape-inner: 8px; /* nested inside a 16px container with 8px inset */
+  --shape-capsule: 9999px;
+
+  --family-display: var(--font-jakarta), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --family-text:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+}

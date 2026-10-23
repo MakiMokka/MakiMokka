@@ -28,9 +28,9 @@ export function AppNav({ labels, ariaLabel, variant }: AppNavProps) {
     return (
       <nav
         aria-label={ariaLabel}
-        className="border-separator bg-bar pb-safe pl-safe pr-safe fixed inset-x-0 bottom-0 z-30 border-t-[0.5px] backdrop-blur-xl backdrop-saturate-150 md:hidden"
+        className="surface-control border-line pb-safe pl-safe pr-safe fixed inset-x-0 bottom-0 z-30 border-t-[0.5px] md:hidden"
       >
-        <ul className="flex h-[49px] items-stretch justify-around">
+        <ul className="flex h-14 items-stretch justify-around">
           {NAV_ITEMS.map((item) => {
             const Icon = ICONS[item.icon];
             const active = isActivePath(pathname, item.href);
@@ -39,11 +39,11 @@ export function AppNav({ labels, ariaLabel, variant }: AppNavProps) {
                 <Link
                   href={item.href}
                   aria-current={active ? 'page' : undefined}
-                  className={`flex h-full flex-col items-center justify-center gap-0.5 text-[10px] font-medium ${
-                    active ? 'text-tint' : 'text-secondary-label'
+                  className={`text-caption flex h-full flex-col items-center justify-center gap-1 font-medium ${
+                    active ? 'text-accent' : 'text-fg-muted'
                   }`}
                 >
-                  <Icon className="size-[26px]" />
+                  <Icon className="size-6" />
                   <span>{labels[item.labelKey]}</span>
                 </Link>
               </li>
@@ -56,7 +56,7 @@ export function AppNav({ labels, ariaLabel, variant }: AppNavProps) {
 
   return (
     <nav aria-label={ariaLabel}>
-      <ul className="space-y-0.5">
+      <ul className="space-y-1">
         {NAV_ITEMS.map((item) => {
           const Icon = ICONS[item.icon];
           const active = isActivePath(pathname, item.href);
@@ -65,11 +65,11 @@ export function AppNav({ labels, ariaLabel, variant }: AppNavProps) {
               <Link
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
-                className={`flex min-h-11 items-center gap-3 rounded-[10px] px-3 text-[15px] ${
-                  active ? 'bg-tint font-semibold text-white' : 'text-label hover:bg-fill'
+                className={`text-callout rounded-control flex min-h-11 items-center gap-3 px-3 ${
+                  active ? 'bg-accent-soft text-accent font-semibold' : 'text-fg hover:bg-surface-2'
                 }`}
               >
-                <Icon className={`size-[22px] ${active ? 'text-white' : 'text-tint'}`} />
+                <Icon className="text-accent size-5" />
                 <span>{labels[item.labelKey]}</span>
               </Link>
             </li>

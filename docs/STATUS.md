@@ -82,3 +82,18 @@ non-allowlisted user, wrong-code handling, zero CSP violations, and no tokens/co
    `FOR UPDATE SKIP LOCKED`, writing metadata only.
 3. App-level rate limiting for server actions; optional TOTP MFA.
 4. Create/complete tasks and follow-ups (schema and RLS are ready).
+
+## Update — OVYRA Brand Design System v1.0 (visual layer only)
+
+Implemented: centralized tokens (`src/styles/tokens.css`), Plus Jakarta Sans (self-hosted, OFL)
+plus system reading text, three-level material system, base component styles, designed light and
+dark themes (system preference + `data-theme`), product name shown as OVYRA, design-system preview
+at `/design-system` (only with `DESIGN_PREVIEW=1`), and docs in `docs/brand/`.
+
+**Blocked on design:** the approved brand image is not in the repository, so the ribbon "V",
+official wordmark and app icon were **not** recreated. The wordmark is a provisional typeset
+placeholder and the PWA icons remain the pre-brand generic icon (see `docs/brand/ASSETS.md`).
+
+No functionality, navigation, data model, authentication or integration changed. Validation:
+lint, format, typecheck pass; unit 117/117 (adds 39 contrast/token checks); database 58/58; build
+pass; E2E 18/18 (adds dark-mode and preview checks), zero CSP violations.

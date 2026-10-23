@@ -66,8 +66,8 @@ export default async function SearchPage({
     <>
       <PageHeader title={t.search.title}>
         <form role="search" action="/search" method="get" className="pb-2">
-          <label className="bg-fill flex min-h-9 items-center gap-2 rounded-[10px] px-2.5">
-            <SearchIcon className="text-secondary-label size-[18px] shrink-0" />
+          <label className="bg-surface-2 rounded-control flex min-h-11 items-center gap-2 px-3">
+            <SearchIcon className="text-fg-muted size-5 shrink-0" />
             <span className="sr-only">{t.search.placeholder}</span>
             <input
               type="search"
@@ -78,7 +78,7 @@ export default async function SearchPage({
               enterKeyHint="search"
               autoComplete="off"
               disabled={!hasAccounts}
-              className="placeholder:text-secondary-label min-w-0 flex-1 bg-transparent py-1.5 outline-none disabled:opacity-60"
+              className="placeholder:text-fg-muted text-fg min-w-0 flex-1 bg-transparent py-2 outline-none disabled:opacity-60"
             />
           </label>
         </form>
