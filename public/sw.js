@@ -6,7 +6,7 @@
  * offline fallback and app icons. Everything else goes straight to the
  * network.
  */
-const CACHE = 'unified-mail-static-v1';
+const CACHE = 'ovyra-static-v2'; // bump when precached assets change
 const PRECACHE = ['/offline.html', '/offline.css', '/icons/icon-192.png'];
 
 self.addEventListener('install', (event) => {

@@ -135,6 +135,21 @@ async function main() {
     assert.equal(response.headers()['x-content-type-options'], 'nosniff');
     assert.ok(!response.headers()['x-powered-by'], 'x-powered-by removed');
     await page.getByText('Version 0.1.0').first().waitFor();
+    // Brand assets must load without a session (they bypass the auth proxy).
+    const logo = page.locator('img.theme-light-only').first();
+    await logo.waitFor();
+    assert.ok(
+      await logo.evaluate((img) => img.complete && img.naturalWidth > 0),
+      'wordmark SVG loaded',
+    );
+    for (const asset of [
+      '/brand/ovyra-wordmark-color-on-dark.svg',
+      '/icons/apple-touch-icon.png',
+      '/icon.svg',
+    ]) {
+      const res = await page.request.get(`${APP}${asset}`, { maxRedirects: 0 });
+      assert.equal(res.status(), 200, `${asset} served publicly`);
+    }
     await page.screenshot({ path: path.join(OUT, '01-login-iphone.png') });
   });
 
@@ -267,7 +282,7 @@ async function main() {
     const desktopPage = await desktop.newPage();
     await desktopPage.goto(`${APP}/inbox`);
     const sidebar = desktopPage.locator('aside');
-    await sidebar.getByText('OVYRA').waitFor();
+    await sidebar.getByRole('img', { name: 'OVYRA' }).waitFor();
     await sidebar.getByText('Version 0.1.0').waitFor();
     await desktopPage.screenshot({ path: path.join(OUT, '10-inbox-desktop.png') });
     await desktop.close();

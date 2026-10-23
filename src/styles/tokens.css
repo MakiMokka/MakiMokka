@@ -17,7 +17,7 @@
   --brand-blue: #458aff;
   --brand-pink: #f04bba;
   --brand-coral: #ff9673;
-  --brand-gradient: linear-gradient(130deg, #458aff 0%, #735bff 36%, #f04bba 70%, #ff9673 100%);
+  --brand-gradient: linear-gradient(135deg, #458aff 0%, #735bff 36%, #f04bba 70%, #ff9673 100%);
 
   /* Surfaces */
   --background: #f8f9ff;
@@ -50,6 +50,8 @@
   --shadow-control: 0 1px 2px rgb(17 22 43 / 0.04), 0 8px 24px rgb(17 22 43 / 0.06);
   --control-highlight: rgb(255 255 255 / 0.6);
   --identity-glow-opacity: 0.22;
+  --show-on-light: inline-block; /* theme-specific artwork (logos) */
+  --show-on-dark: none;
 
   color-scheme: light;
 }
@@ -78,6 +80,8 @@
     --shadow-control: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.28);
     --control-highlight: rgb(255 255 255 / 0.06);
     --identity-glow-opacity: 0.16;
+    --show-on-light: none;
+    --show-on-dark: inline-block;
     color-scheme: dark;
   }
 }
@@ -103,6 +107,8 @@
   --shadow-control: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.28);
   --control-highlight: rgb(255 255 255 / 0.06);
   --identity-glow-opacity: 0.16;
+  --show-on-light: none;
+  --show-on-dark: inline-block;
   color-scheme: dark;
 }
 

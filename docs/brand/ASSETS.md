@@ -1,45 +1,40 @@
 # OVYRA asset inventory
 
-Last reviewed: 2026-10-23 · Design system v1.0
+Last reviewed: 2026-10-23 · Identity v1.0 approved 2026-10-23
 
-Status legend: **Approved** (official file in repo) · **Candidate** (vector reconstruction in
-`brand/`, pending visual review) · **Provisional** (placeholder shipped in the app) · **Pending**
-(not created) · **Legacy** (pre-brand, scheduled for replacement).
+Status legend: **Approved** (official, in use) · **Pending** (not yet produced) · **Provisional**
+(approximation in use, awaiting review).
 
-The approved styleboard is in `docs/brand/reference/`. Vector files were reconstructed from it in
-`brand/` (see CONSTRUCTION.md); they await visual review and are **not yet wired into the app**.
-Orbit logos and earlier OVYRA versions are not used anywhere.
+Sources: the approved styleboard (`docs/brand/reference/`) and the vector reconstruction in
+`brand/` (construction in `CONSTRUCTION.md`). Orbit logos and earlier OVYRA versions are not used
+anywhere.
 
-| ID   | Asset                                             | Status                       | Location / notes                                                                                                                                              |
-| ---- | ------------------------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| R-01 | Approved brand reference image                    | **Approved**                 | `docs/brand/reference/OVYRA_approved_styleboard.png` (raster concept board).                                                                                  |
-| W-01 | In-app wordmark component                         | **Provisional**              | `src/components/wordmark.tsx` renders plain "OVYRA" in Plus Jakarta Sans (600, +0.14em). No V treatment, by design. Marked `data-asset-status="provisional"`. |
-| W-02 | Wordmark SVG (color / mono / solid, light & dark) | **Candidate**                | `brand/svg/ovyra-wordmark-*.svg` — custom outlined lettering + ribbon V. Pending review (CONSTRUCTION §9).                                                    |
-| V-01 | Standalone "V" symbol                             | **Candidate**                | `brand/svg/ovyra-symbol-*.svg` (color, mono, light, simplified, solid black/white).                                                                           |
-| I-01 | iOS app icon 1024×1024 (default)                  | **Candidate**                | `brand/svg/ovyra-app-icon-default.svg`, `brand/png/ovyra-app-icon-{16…1024}.png`, layers in `brand/layers/`.                                                  |
-| I-02 | iOS icon — dark variant                           | **Candidate**                | `brand/svg/ovyra-app-icon-dark.svg` (+ light alternative `-light.svg`).                                                                                       |
-| I-03 | iOS icon — tinted variant                         | **Candidate**                | `brand/svg/ovyra-app-icon-tinted.svg` / `-mono.svg` (grayscale sources; the system applies the tint).                                                         |
-| I-04 | iOS icon — clear/transparent variant              | **Candidate**                | `brand/svg/ovyra-app-icon-foreground-transparent.svg`; the system renders clear from the layers.                                                              |
-| I-05 | PWA icons 192/512 + maskable 512                  | **Legacy** → candidate ready | App still serves `public/icons/*` (generic envelope). Replacements in `brand/png/pwa/`, swap after approval.                                                  |
-| I-06 | Favicon SVG                                       | **Legacy** → candidate ready | `public/icon.svg`; replace with `brand/svg/ovyra-symbol-simplified.svg` after approval.                                                                       |
-| C-01 | Color tokens                                      | Approved*                    | `src/styles/tokens.css`. *Brand palette exactly as briefed; secondary values adjusted for WCAG AA (see ACCESSIBILITY.md).                                     |
-| T-01 | Plus Jakarta Sans (UI titles)                     | Approved                     | `src/app/fonts/` — OFL 1.1, license file alongside. Latin subset, variable 200–800.                                                                           |
-| T-02 | Reading text font                                 | Approved                     | System font (SF Pro on Apple platforms). No file shipped.                                                                                                     |
-| G-01 | Brand gradient                                    | Approved                     | `--brand-gradient` (130°, blue → violet → pink → coral).                                                                                                      |
-| G-02 | Identity aura (soft brand light)                  | Provisional                  | `identity-aura` utility; CSS approximation of "luminous depth", disabled with reduced transparency/increased contrast. Review against R-01.                   |
-| X-01 | Splash / launch images                            | Pending                      | Not required for the PWA; consider after I-01.                                                                                                                |
+| ID   | Asset                                        | Status       | Location / notes                                                                            |
+| ---- | -------------------------------------------- | ------------ | ------------------------------------------------------------------------------------------- |
+| R-01 | Approved styleboard (art direction)          | **Approved** | `docs/brand/reference/OVYRA_approved_styleboard.png`                                        |
+| W-02 | Wordmark SVG (color / mono / solid)          | **Approved** | `brand/svg/ovyra-wordmark-*.svg`; app copies in `public/brand/` (color on light / on dark)  |
+| W-01 | In-app wordmark component                    | **Approved** | `src/components/wordmark.tsx` — renders W-02, switches with the active theme                |
+| V-01 | Standalone "V" symbol                        | **Approved** | `brand/svg/ovyra-symbol-*.svg` (color, mono, light, simplified, solid black/white)          |
+| I-01 | iOS app icon 1024×1024 (default)             | **Approved** | `brand/svg/ovyra-app-icon-default.svg`, `brand/png/ovyra-app-icon-{16…1024}.png`            |
+| I-02 | iOS icon — dark / light alternatives         | **Approved** | `brand/svg/ovyra-app-icon-dark.svg`, `-light.svg`                                           |
+| I-03 | iOS icon — tinted / mono sources             | **Approved** | `brand/svg/ovyra-app-icon-tinted.svg`, `-mono.svg` (grayscale; the system applies the tint) |
+| I-04 | iOS icon — clear / transparent foreground    | **Approved** | `brand/svg/ovyra-app-icon-foreground-transparent.svg`                                       |
+| I-07 | Icon Composer layers                         | **Approved** | `brand/layers/` (background, left arm, right arm, fold)                                     |
+| I-08 | Icon Composer `.icon` bundle / Xcode catalog | Pending      | Must be assembled in Icon Composer on macOS from I-07 (not possible in this environment)    |
+| I-05 | PWA icons 180/192/512 + maskable 512         | **Approved** | `public/icons/*` (from `brand/png/pwa/`)                                                    |
+| I-06 | Favicon SVG                                  | **Approved** | `public/icon.svg` (simplified symbol)                                                       |
+| C-01 | Color tokens                                 | **Approved** | `src/styles/tokens.css`, `brand/tokens.json`                                                |
+| G-01 | Brand gradient                               | **Approved** | 135°, #458AFF 0 → #735BFF 0.36 → #F04BBA 0.70 → #FF9673 1                                   |
+| T-01 | Plus Jakarta Sans (UI titles)                | **Approved** | `src/app/fonts/` — OFL 1.1, license alongside                                               |
+| T-02 | Reading text font                            | **Approved** | System font (SF Pro on Apple platforms)                                                     |
+| G-02 | Identity aura (soft brand light)             | Provisional  | `identity-aura` utility; CSS approximation of the styleboard's luminous depth               |
+| X-01 | Splash / launch images                       | Pending      | Not required for the PWA                                                                    |
 
-## Handover checklist for design
+## Updating assets
 
-1. Provide R-01 and confirm it is the approved direction.
-2. Deliver W-02 (SVG, outlined, with clear-space and minimum-size spec) and V-01.
-3. Deliver I-01…I-04 at 1024×1024 (or an Icon Composer `.icon` file) plus a small-size check at
-   29/40/60 pt.
-4. Confirm or adjust G-02 and the adjusted semantic colors.
-
-## Replacing a provisional asset
-
-- **Wordmark:** replace the body of `Wordmark` with an inline SVG (`aria-label="OVYRA"`,
-  `role="img"`), keep the `size` prop, set `data-asset-status="approved"`, and update the unit test.
-- **Icons:** overwrite the files in `public/icons/` (same names and sizes) and `public/icon.svg`;
-  `scripts/generate-icons.py` then becomes obsolete and should be deleted.
+1. Edit `brand/source/geometry.py` (shapes) or the palettes in `brand/source/build.py`.
+2. Rebuild: `python3 brand/source/build.py && node brand/source/render.mjs && python3 brand/source/sheets.py`.
+3. Copy into the app: `brand/svg/ovyra-wordmark-color-on-{light,dark}.svg` and
+   `ovyra-symbol-color.svg` → `public/brand/`; `brand/png/pwa/*` → `public/icons/`;
+   `brand/svg/ovyra-symbol-simplified.svg` → `public/icon.svg`.
+4. Bump `CACHE` in `public/sw.js` so installed PWAs pick up the new icon.

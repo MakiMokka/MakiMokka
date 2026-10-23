@@ -13,10 +13,15 @@ vi.mock('next/navigation', () => ({ usePathname: () => '/settings/accounts' }));
 afterEach(cleanup);
 
 describe('Brand', () => {
-  it('shows the version directly beneath the provisional wordmark', () => {
+  it('shows the version directly beneath the approved wordmark', () => {
     render(<Brand versionTemplate="Version {version}" />);
-    const name = screen.getByText('OVYRA');
-    expect(name.getAttribute('data-asset-status')).toBe('provisional');
+    const name = screen.getByRole('img', { name: 'OVYRA' });
+    expect(name.getAttribute('data-asset-status')).toBe('approved');
+    const sources = [...name.querySelectorAll('img')].map((img) => img.getAttribute('src'));
+    expect(sources).toEqual([
+      '/brand/ovyra-wordmark-color-on-light.svg',
+      '/brand/ovyra-wordmark-color-on-dark.svg',
+    ]);
     const version = screen.getByTestId('app-version');
     expect(version.textContent).toBe(`Version ${APP_VERSION}`);
     expect(name.nextElementSibling).toBe(version);

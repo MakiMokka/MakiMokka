@@ -1,12 +1,12 @@
-# OVYRA — construction, clear space and usage (v1.0 candidate)
+# OVYRA — construction, clear space and usage (v1.0)
 
 Source of art direction: `docs/brand/reference/OVYRA_approved_styleboard.png` (from
 `OVYRA_Brand_Assets_v1.zip`). The SVGs in that package describe themselves as an "interpreted
 reconstruction" with a substitute typeface for the wordmark, so they were **not** used as the
 basis. Everything in `brand/` was rebuilt from geometry in `brand/source/geometry.py`.
 
-> **Status: candidate, pending visual review.** See §9 for every known difference from the
-> reference. Nothing here should be called final until those items are approved.
+> **Status: approved 2026-10-23.** The known differences from the reference (§9) were accepted, and
+> the open styleboard inconsistencies were resolved as recorded in §10.
 
 ## 1. Symbol — the ribbon V
 
@@ -62,7 +62,7 @@ Cap height **H = 200** units. Monoline geometric letters, outlined, with no font
   - Detailed symbol: 48 px.
   - Below 48 px use `ovyra-symbol-simplified`; at 16–32 px it stays legible.
 - The styleboard's clear-space diagram labels the same margin as "X" on one side and "2X" on the
-  other. The uniform 2X above is a proposal pending confirmation (§9).
+  other. The uniform 2X above was adopted (§10).
 
 ## 4. Color
 
@@ -138,7 +138,7 @@ Do not:
 Change `brand/source/geometry.py` (construction) or the palettes in `build.py`, then rebuild (see
 `brand/README.md`). SVG groups are named for editing in Figma or Illustrator.
 
-## 9. Known differences from the reference (visual review required)
+## 9. Known differences from the reference (accepted)
 
 1. **Ribbon detail.** The reference is a painted 3D render with soft, continuous shading, several
    internal fold edges and a soft drop glow. The reconstruction uses six clean layers:
@@ -169,9 +169,14 @@ Change `brand/source/geometry.py` (construction) or the palettes in `build.py`, 
 5. **Tinted icon.** The styleboard shows a violet tinted mock-up. In iOS the system applies the
    tint, so a grayscale source is delivered instead.
 
-**Review checklist:**
+Side-by-side evidence: `brand/review/comparison-symbol.png` and `comparison-wordmark.png`.
 
-- Compare `brand/review/comparison-symbol.png` and `comparison-wordmark.png` against the
-  reference.
-- Decide on items 2, 4 and 5.
-- Approve, or list the adjustments needed.
+## 10. Decisions (approval of 2026-10-23)
+
+| Topic          | Decision                                                                                    | How to revert                                   |
+| -------------- | ------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| Palette        | Gradient values #458AFF / #735BFF / #F04BBA / #FF9673. Swatch values from the board unused. | Change `brand/source/build.py` and `tokens.css` |
+| Gradient angle | **135°** as on the approved styleboard. UI `--brand-gradient` updated from 130°.            | `src/styles/tokens.css`                         |
+| Typeface       | Plus Jakarta Sans stays for UI titles until Satoshi's license and files are provided.       | Swap `src/app/fonts.ts`                         |
+| Clear space    | Uniform 2X (X = 0.35 H) on all sides of the wordmark.                                       | §3                                              |
+| Tinted icon    | Grayscale source; iOS applies the tint.                                                     | —                                               |

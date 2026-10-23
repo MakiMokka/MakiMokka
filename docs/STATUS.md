@@ -97,3 +97,16 @@ placeholder and the PWA icons remain the pre-brand generic icon (see `docs/brand
 No functionality, navigation, data model, authentication or integration changed. Validation:
 lint, format, typecheck pass; unit 117/117 (adds 39 contrast/token checks); database 58/58; build
 pass; E2E 18/18 (adds dark-mode and preview checks), zero CSP violations.
+
+## Update — OVYRA identity v1.0 approved and integrated
+
+Approved 2026-10-23. The app now uses the official wordmark (theme-aware SVGs in `public/brand/`),
+new PWA/Apple touch icons (`public/icons/`) and favicon (`public/icon.svg`). Brand gradient angle set
+to 135° per the approved styleboard; Plus Jakarta Sans kept until Satoshi is licensed; clear space
+2X. Brand assets bypass the auth proxy so they load on the sign-in screen (E2E-verified). Service
+worker cache bumped so installed PWAs refresh the icon.
+
+Pending: the Icon Composer `.icon` bundle / Xcode catalog (needs macOS; layers are ready in
+`brand/layers/`) and a check of the icon on a physical iPhone. No functionality, navigation, data
+model or authentication changed. Validation: lint, format, typecheck pass; unit 117/117; database
+58/58; build pass; E2E 18/18 with zero CSP violations.

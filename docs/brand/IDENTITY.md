@@ -4,9 +4,9 @@ OVYRA is a premium email app for iPhone and the web. The identity is recognized 
 ribbon **V**, refined geometric lettering, a violet–blue–pink–coral gradient, and delicate,
 translucent depth — never loud neon.
 
-> **Status:** the approved concept image and official vectors are not yet in the repository. The
-> wordmark in the app is a **provisional** typeset placeholder and the app icon is still the
-> pre-brand generic icon. See [ASSETS.md](ASSETS.md).
+> **Status:** identity v1.0 approved 2026-10-23. Official files live in `/brand`; construction,
+> clear space and decisions are in [CONSTRUCTION.md](CONSTRUCTION.md), the inventory in
+> [ASSETS.md](ASSETS.md).
 
 ## 1. Logo
 
@@ -31,7 +31,7 @@ translucent depth — never loud neon.
 | `--brand-blue`        | #458AFF                            | same    | Identity only                          |
 | `--brand-pink`        | #F04BBA                            | same    | Identity only                          |
 | `--brand-coral`       | #FF9673                            | same    | Identity only                          |
-| `--brand-gradient`    | 130°: blue → violet → pink → coral | same    | Logo, icon, identity moments           |
+| `--brand-gradient`    | 135°: blue → violet → pink → coral | same    | Logo, icon, identity moments           |
 | `--background`        | #F8F9FF                            | #0B1025 | App canvas                             |
 | `--surface`           | #FFFFFF                            | #151C36 | Reading surfaces, lists                |
 | `--surface-secondary` | #F0F2FA                            | #202944 | Fields, pressed states                 |

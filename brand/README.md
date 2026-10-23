@@ -1,9 +1,9 @@
-# OVYRA identity files (v1.0 candidate)
+# OVYRA identity files (v1.0)
 
-> **Status: candidate — pending visual review.** Reconstructed with controlled vector geometry
-> from the approved styleboard (`docs/brand/reference/OVYRA_approved_styleboard.png`). Read the
-> known differences in [docs/brand/CONSTRUCTION.md](../docs/brand/CONSTRUCTION.md) §9 before
-> approving. Not yet wired into the app.
+> **Status: approved 2026-10-23.** Reconstructed with controlled vector geometry from the approved
+> styleboard (`docs/brand/reference/OVYRA_approved_styleboard.png`). Accepted differences and
+> decisions: [docs/brand/CONSTRUCTION.md](../docs/brand/CONSTRUCTION.md) §9–§10. In use in the app
+> (`public/brand/`, `public/icons/`, `public/icon.svg`).
 
 | Folder        | Contents                                                                                                                                |
 | ------------- | --------------------------------------------------------------------------------------------------------------------------------------- |

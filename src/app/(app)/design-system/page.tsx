@@ -27,8 +27,8 @@ export default async function DesignSystemPage() {
       <PageHeader title="Design system" />
       <PageBody>
         <p className="text-fg-muted text-callout" data-testid="design-system">
-          OVYRA Brand Design System v1.0 — preview with neutral content. Assets marked provisional
-          are placeholders pending approved files (docs/brand/ASSETS.md).
+          OVYRA Brand Design System v1.0 — preview with neutral content. Identity assets are the
+          approved v1.0 files from /brand (docs/brand/ASSETS.md).
         </p>
 
         <Section title="Identity">
@@ -40,9 +40,7 @@ export default async function DesignSystemPage() {
                 className="bg-canvas text-fg rounded-surface identity-aura flex min-h-40 flex-col items-center justify-center gap-2 overflow-hidden p-6"
               >
                 <Wordmark size="lg" />
-                <span className="text-fg-muted text-caption">
-                  Wordmark W-01 · provisional ({theme})
-                </span>
+                <span className="text-fg-muted text-caption">Wordmark W-02 ({theme})</span>
               </div>
             ))}
           </div>
@@ -51,10 +49,30 @@ export default async function DesignSystemPage() {
             aria-label="Brand gradient"
             role="img"
           />
-          <p className="text-fg-muted text-subhead">
-            The custom ribbon “V” and the app icon are pending approved artwork and are deliberately
-            not recreated here.
-          </p>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <div className="surface-reading rounded-container flex items-center justify-center p-6">
+              {/* eslint-disable-next-line @next/next/no-img-element -- static same-origin SVG */}
+              <img src="/brand/ovyra-symbol-color.svg" alt="OVYRA symbol" width={96} height={83} />
+            </div>
+            {[180, 64, 32].map((size) => (
+              <div
+                key={size}
+                className="surface-reading rounded-container flex flex-col items-center justify-center gap-2 p-6"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element -- static same-origin PNG */}
+                <img
+                  src="/icons/apple-touch-icon.png"
+                  alt={`App icon at ${size} px`}
+                  width={size > 96 ? 96 : size}
+                  height={size > 96 ? 96 : size}
+                  className="rounded-[22%]"
+                />
+                <span className="text-fg-muted text-caption">
+                  {size > 96 ? 'App icon' : `${size} px`}
+                </span>
+              </div>
+            ))}
+          </div>
         </Section>
 
         <Section title="Color">

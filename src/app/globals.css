@@ -100,6 +100,13 @@
   background-clip: text;
   color: transparent;
 }
+/* Theme-specific artwork, e.g. the wordmark for light vs dark surfaces. */
+@utility theme-light-only {
+  display: var(--show-on-light);
+}
+@utility theme-dark-only {
+  display: var(--show-on-dark);
+}
 /* Soft, out-of-focus brand light behind identity moments (sign-in). */
 @utility identity-aura {
   position: relative;
