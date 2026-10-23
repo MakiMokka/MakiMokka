@@ -49,7 +49,7 @@ const eslintConfig = defineConfig([
   },
   {
     // Test code may log and may inspect web storage to assert it is empty.
-    files: ['tests/**', '**/*.test.ts', '**/*.test.tsx', 'scripts/**'],
+    files: ['tests/**', '**/*.test.ts', '**/*.test.tsx', 'scripts/**', 'brand/source/**'],
     rules: {
       'no-console': 'off',
       'no-restricted-properties': 'off',
