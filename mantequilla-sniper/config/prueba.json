@@ -1,0 +1,56 @@
+{
+  "campaignId": "mantequilla-prueba-2026-10",
+  "restaurant": {
+    "name": "Mantequilla Social Club",
+    "slug": "mantequilla-social-club",
+    "platform": "covermanager",
+    "url": "https://restaurante.covermanager.com/mantequilla-social-club/",
+    "timezone": "America/Mexico_City"
+  },
+  "partySize": 2,
+  "release": {
+    "time": "00:00",
+    "daysAheadCandidates": [
+      0,
+      1
+    ],
+    "note": "Campaña de PRUEBA (reserva real que se cancela de inmediato). Usa su propio campaignId para no marcar como terminada la campaña de noviembre."
+  },
+  "polling": {
+    "minIntervalMs": 3000,
+    "releaseWindowSeconds": 180,
+    "releasePollMs": 4000,
+    "cancellationPollMs": 300000,
+    "maxConsecutiveErrors": 5
+  },
+  "targets": [
+    {
+      "date": "2026-10-25",
+      "priority": 1,
+      "label": "Domingo 25 de octubre (prueba)",
+      "referenceTimes": [
+        "13:00",
+        "14:30",
+        "16:00",
+        "17:30",
+        "19:00",
+        "20:30",
+        "22:00"
+      ]
+    },
+    {
+      "date": "2026-10-27",
+      "priority": 2,
+      "label": "Martes 27 de octubre (prueba)",
+      "referenceTimes": [
+        "13:00",
+        "14:30",
+        "16:00",
+        "17:30",
+        "19:00",
+        "20:30",
+        "22:00"
+      ]
+    }
+  ]
+}
