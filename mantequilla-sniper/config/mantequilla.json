@@ -1,0 +1,52 @@
+{
+  "campaignId": "mantequilla-2026-11",
+  "restaurant": {
+    "name": "Mantequilla Social Club",
+    "slug": "mantequilla-social-club",
+    "platform": "covermanager",
+    "url": "https://restaurante.covermanager.com/mantequilla-social-club/",
+    "timezone": "America/Mexico_City"
+  },
+  "partySize": 2,
+  "release": {
+    "time": "00:00",
+    "daysAheadCandidates": [0, 1],
+    "note": "Fuentes públicas: 'los turnos se liberan cada día a medianoche' (mantequillacdmx.com) y 'todos los días a las 12am se abren las reservas del siguiente día' (Time Out). Sin verificar en vivo: ejecutar `npm run recon` y ajustar daysAheadCandidates al valor observado."
+  },
+  "polling": {
+    "minIntervalMs": 3000,
+    "releaseWindowSeconds": 180,
+    "releasePollMs": 4000,
+    "cancellationPollMs": 300000,
+    "maxConsecutiveErrors": 5
+  },
+  "targets": [
+    {
+      "date": "2026-11-03",
+      "priority": 1,
+      "label": "Martes 3 de noviembre",
+      "minTime": "20:00",
+      "preferredTimes": ["20:30", "22:00"],
+      "referenceTimes": ["20:30", "22:00"]
+    },
+    {
+      "date": "2026-11-06",
+      "priority": 2,
+      "label": "Viernes 6 de noviembre",
+      "minTime": "19:00",
+      "referenceTimes": ["19:00", "20:30", "22:00"]
+    },
+    {
+      "date": "2026-11-07",
+      "priority": 3,
+      "label": "Sábado 7 de noviembre",
+      "referenceTimes": ["13:00", "14:30", "16:00", "17:30", "19:00", "20:30", "22:00"]
+    },
+    {
+      "date": "2026-11-08",
+      "priority": 4,
+      "label": "Domingo 8 de noviembre",
+      "referenceTimes": ["13:00", "14:30", "16:00", "17:30", "19:00", "20:30", "22:00"]
+    }
+  ]
+}

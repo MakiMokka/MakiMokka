@@ -1,0 +1,33 @@
+# Despliegue del worker en Fly.io: una máquina siempre encendida, región Querétaro (cerca de CDMX).
+app = "mantequilla-sniper"
+primary_region = "qro"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  HEADLESS = "true"
+  BOOKING_MODE = "ASSISTED"
+  STATE_DIR = "/app/state"
+  PORT = "8080"
+
+[[mounts]]
+  source = "sniper_state"
+  destination = "/app/state"
+
+[http_service]
+  internal_port = 8080
+  auto_stop_machines = "off"
+  auto_start_machines = false
+  min_machines_running = 1
+
+  [[http_service.checks]]
+    interval = "60s"
+    timeout = "5s"
+    method = "GET"
+    path = "/health"
+
+[[vm]]
+  memory = "1gb"
+  cpu_kind = "shared"
+  cpus = 1

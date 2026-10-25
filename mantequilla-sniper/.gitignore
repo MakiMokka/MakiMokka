@@ -1,0 +1,8 @@
+node_modules
+.env
+.env.*
+!.env.example
+recon-output/
+state/
+*.har
+state-test/

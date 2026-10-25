@@ -1,0 +1,60 @@
+<!doctype html>
+<!-- Página SINTÉTICA para probar el código del adapter. NO replica la interfaz real de CoverManager. -->
+<html lang="es"><head><meta charset="utf-8"><title>Widget sintético</title></head>
+<body>
+<label for="pax">Personas</label>
+<select id="pax"><option>1 persona</option><option>2 personas</option><option>3 personas</option></select>
+<div id="cal">
+  <h3 id="hdr"></h3>
+  <button id="next">Siguiente</button>
+  <div id="days"></div>
+</div>
+<div id="times"></div>
+<form id="form" hidden>
+  <label>Nombre <input name="name" required></label>
+  <label>Teléfono <input name="phone" required></label>
+  <label>Email <input name="email" type="email" required></label>
+  <label>¿Festejas algo? <select name="celebration" required><option value="">Elige</option><option>Sí</option><option>No</option></select></label>
+  <label><input type="checkbox" name="terms" required> Acepto las condiciones de la reserva</label>
+  <label><input type="checkbox" name="ads"> Quiero recibir publicidad</label>
+  <div id="extra"></div>
+  <button type="button" id="submit">Reservar</button>
+</form>
+<div id="result"></div>
+<script>
+  const params = new URLSearchParams(location.hash.slice(1));
+  const open = JSON.parse(params.get('open') || '{}');   // {"2026-11-03":["20:30"]}
+  const sold = JSON.parse(params.get('sold') || '{}');
+  const maxMonth = Number(params.get('maxMonth') || 10);  // 0-based: 10 = noviembre
+  const MONTHS = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  let month = 9, year = 2026;
+  window.__submitted = 0;
+  function render() {
+    document.getElementById('hdr').textContent = MONTHS[month] + ' ' + year;
+    document.getElementById('next').disabled = month >= maxMonth;
+    const days = document.getElementById('days'); days.innerHTML = '';
+    for (let d = 1; d <= 30; d++) {
+      const iso = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      const b = document.createElement('button'); b.textContent = String(d);
+      if (!open[iso] && !sold[iso]) b.disabled = true;
+      b.onclick = () => showTimes(iso); days.appendChild(b);
+    }
+  }
+  function showTimes(iso) {
+    const t = document.getElementById('times'); t.innerHTML = '';
+    for (const time of open[iso] || []) { const b = document.createElement('button'); b.textContent = time; b.onclick = () => { document.getElementById('form').hidden = false; window.__slot = iso + ' ' + time; }; t.appendChild(b); }
+    for (const time of sold[iso] || []) { const b = document.createElement('button'); b.textContent = time; b.disabled = true; t.appendChild(b); }
+    if (params.get('payment') === '1') document.getElementById('extra').textContent = 'Se requiere tarjeta de garantía';
+  }
+  document.getElementById('next').onclick = () => { month++; render(); };
+  document.getElementById('submit').onclick = () => {
+    const f = document.getElementById('form');
+    if (!f.reportValidity()) return;
+    window.__submitted++;
+    window.__form = Object.fromEntries(new FormData(f));
+    f.hidden = true;
+    document.getElementById('result').textContent = 'Reserva confirmada. Localizador: CMX7781';
+  };
+  render();
+</script>
+</body></html>
