@@ -40,17 +40,17 @@ describe('motor de preferencias', () => {
 });
 
 describe('calendario de aperturas', () => {
-  it('genera aperturas a medianoche CDMX para cada regla candidata', () => {
+  it('genera aperturas a mediodía CDMX para cada regla candidata', () => {
     const cal = releaseCalendar(campaign);
-    expect(cal[0]!.atLocal).toBe('2026-11-02T00:00:00.000-06:00');
+    expect(cal[0]!.atLocal).toBe('2026-11-02T12:00:00.000-06:00');
     expect(cal.map((o) => o.atLocal.slice(0, 10))).toEqual(['2026-11-02', '2026-11-03', '2026-11-05', '2026-11-06', '2026-11-07', '2026-11-08']);
     expect(cal.find((o) => o.atLocal.startsWith('2026-11-06'))!.dates).toEqual(['2026-11-06', '2026-11-07']);
   });
 
   it('la próxima apertura respeta la ventana en curso', () => {
-    expect(nextRelease(campaign, at('2026-11-02T00:01:00'))!.atLocal).toMatch(/^2026-11-02/);
-    expect(nextRelease(campaign, at('2026-11-02T00:10:00'))!.atLocal).toMatch(/^2026-11-03/);
-    expect(nextRelease(campaign, at('2026-11-09T00:10:00'))).toBeNull();
+    expect(nextRelease(campaign, at('2026-11-02T12:01:00'))!.atLocal).toMatch(/^2026-11-02/);
+    expect(nextRelease(campaign, at('2026-11-02T12:10:00'))!.atLocal).toMatch(/^2026-11-03/);
+    expect(nextRelease(campaign, at('2026-11-09T12:10:00'))).toBeNull();
   });
 
   it('el piso de frecuencia de consulta se impone', () => {

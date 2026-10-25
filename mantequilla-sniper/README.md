@@ -2,7 +2,7 @@
 
 Sistema privado para conseguir **una** reservación para 2 personas en Mantequilla Social Club (CoverManager, CDMX) en las fechas objetivo de noviembre de 2026.
 
-- **Worker** (`src/`): Node + Playwright. Es un servicio persistente que se prepara antes de cada apertura de medianoche, detecta mesas, elige la mejor opción, reserva (cuando está autorizado) y notifica.
+- **Worker** (`src/`): Node + Playwright. Es un servicio persistente que se prepara antes de cada apertura diaria (12:00 CDMX, configurable), detecta mesas, elige la mejor opción, reserva (cuando está autorizado) y notifica.
 - **Dashboard** (`dashboard/`): Next.js, mobile‑first, para Vercel. Muestra estado, cuenta regresiva, fechas, actividad y configuración, y permite activar push.
 - **Base de datos**: Supabase (`supabase/migrations/001_init.sql`). Sin Supabase, el worker usa `state/store.json`.
 

@@ -9,12 +9,12 @@
   },
   "partySize": 2,
   "release": {
-    "time": "00:00",
+    "time": "12:00",
     "daysAheadCandidates": [
       0,
       1
     ],
-    "note": "Campaña de PRUEBA (reserva real que se cancela de inmediato). Usa su propio campaignId para no marcar como terminada la campaña de noviembre."
+    "note": "Campaña de PRUEBA (reserva real que se cancela de inmediato). Apertura a las 12:00 (mediodía) hora CDMX, según información directa y una publicación de @mantequilla.sc ('se liberan a las 12 de día'). Otras fuentes dicen medianoche. Días de anticipación sin verificar: ejecutar `npm run recon` y ajustar daysAheadCandidates."
   },
   "polling": {
     "minIntervalMs": 3000,

@@ -14,7 +14,7 @@ Para cerrar la Fase 1 hay que correr `npm run recon` desde una máquina o servid
 |---|---|---|---|
 | Capacidad | 15–16 asientos, siete turnos, solo con reserva, lunes cerrado | mantequillacdmx.com (vía buscador), Antojito, Marco Beteta | Alta |
 | Turnos | 13:00, 14:30, 16:00, 17:30, 19:00, 20:30, 22:00 | Marco Beteta | Media |
-| Apertura | "los turnos se liberan cada día a medianoche" | mantequillacdmx.com | Media‑alta |
+| Apertura | **12:00 (mediodía) CDMX** según información directa del usuario y @mantequilla.sc ("se liberan a las 12 de día"); mantequillacdmx.com y Time Out dicen medianoche | Varias, en conflicto | Configurado a 12:00; verificar con recon |
 | Anticipación | "todos los días a las 12am se abren las reservas **del siguiente día**" | Time Out México | Media: no queda claro si es 0 o 1 día |
 | Contradicción | Una publicación de Instagram dice "se liberan a las 12 de día" | @mantequilla.sc (vía buscador) | Baja / posiblemente antigua |
 | Demanda | "a las 12 ya no hay nada disponible"; usuarios reportan semanas de intentos | Marco Beteta, TikTok | Alta |
@@ -26,8 +26,8 @@ Para cerrar la Fase 1 hay que correr `npm run recon` desde una máquina o servid
 
 ## Conclusiones de viabilidad
 
-1. **Las fechas objetivo todavía no están abiertas.** Con apertura diaria a las 00:00 y una anticipación de 0–1 días, el martes 3 abre el lunes 2 a las 00:00 (o el martes 3 a las 00:00). Ver el calendario con `npm run plan`.
-2. **Hay seis oportunidades de apertura** (2, 3, 5, 6, 7 y 8 de noviembre a las 00:00 CDMX), más monitoreo de cancelaciones entre ellas.
+1. **Las fechas objetivo todavía no están abiertas.** Con apertura diaria a las 12:00 y una anticipación de 0–1 días, el martes 3 abre el lunes 2 a las 12:00 (o el martes 3 a las 12:00). Ver el calendario con `npm run plan`.
+2. **Hay seis oportunidades de apertura** (2, 3, 5, 6, 7 y 8 de noviembre a las 12:00 CDMX), más monitoreo de cancelaciones entre ellas.
 3. **La ventana real dura segundos** (15 lugares). El sistema hace la primera consulta exactamente en T=0 con el navegador ya preparado; después consulta cada 4 s (piso de 3 s) durante 3 minutos.
 4. **Un fallo de lectura nunca cuenta como "sin mesas"** (estado UNKNOWN/ERROR).
 5. **Riesgos que obligan a intervención humana:** CAPTCHA o anti‑bot, una tarjeta de garantía o depósito (nunca se acepta sin autorización) y campos obligatorios desconocidos. En todos esos casos el robot se detiene y notifica.
@@ -36,7 +36,7 @@ Para cerrar la Fase 1 hay que correr `npm run recon` desde una máquina o servid
 ## Qué falta para cerrar las Fases 1 y 2
 
 - [ ] Correr `npm run recon` con red y revisar `recon-output/report.md`: frames, controles, textos de política y horizonte del calendario.
-- [ ] Fijar `release.daysAheadCandidates` al valor observado (comparar el último día seleccionable con la fecha de hoy, justo antes y justo después de una medianoche).
+- [ ] Fijar `release.daysAheadCandidates` al valor observado (comparar el último día seleccionable con la fecha de hoy, justo antes y justo después de las 12:00; si a las 12:00 no cambia nada, revisar a las 00:00).
 - [ ] Confirmar si se pide tarjeta de garantía o depósito y si hay CAPTCHA.
 - [ ] Ajustar `src/adapters/covermanager/selectors.ts` a lo observado y ejecutar el dry run del formulario.
 - [ ] Revisar las condiciones de uso de CoverManager sobre reservas automatizadas antes de activar AUTO.
