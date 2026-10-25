@@ -132,7 +132,7 @@ export class BookingEngine {
           type: 'HUMAN_ACTION_REQUIRED',
           title: 'Mesa disponible: completa la reserva',
           body: `${c.target.label} ${slot.time} para ${slot.partySize}. ${outcome.detail}`,
-          url: this.d.restaurantUrl,
+          url: adapter.deepLink?.(slot, this.d.guest) ?? this.d.restaurantUrl,
           urgent: true,
           data: { date: slot.date, time: slot.time },
         });
@@ -146,7 +146,7 @@ export class BookingEngine {
           type: 'HUMAN_ACTION_REQUIRED',
           title: 'Acción humana requerida',
           body: `${c.target.label} ${slot.time}: ${reason}`,
-          url: this.d.restaurantUrl,
+          url: adapter.deepLink?.(slot, this.d.guest) ?? this.d.restaurantUrl,
           urgent: true,
           data: { date: slot.date, time: slot.time },
         });

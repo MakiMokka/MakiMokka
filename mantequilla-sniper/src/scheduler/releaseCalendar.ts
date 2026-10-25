@@ -15,16 +15,16 @@ export interface ReleaseOpportunity {
 
 /**
  * Calendario de oportunidades: para cada fecha objetivo D y cada regla candidata k
- * (días de anticipación), la apertura es (D − k días) a la hora de liberación local.
+ * (días de anticipación) y cada hora candidata, la apertura es (D − k días) a esa hora local.
  * Como la regla real no está verificada, se consideran todas las candidatas.
  */
 export function releaseCalendar(c: CampaignConfig): ReleaseOpportunity[] {
   const zone = c.restaurant.timezone;
   const byInstant = new Map<number, ReleaseOpportunity>();
   for (const t of c.targets) {
-    for (const k of c.release.daysAheadCandidates) {
+    for (const k of c.release.daysAheadCandidates) for (const time of c.release.times) {
       const day = DateTime.fromISO(t.date, { zone }).minus({ days: k }).toISODate()!;
-      const at = localDateTime(day, c.release.time, zone);
+      const at = localDateTime(day, time, zone);
       const ms = at.toMillis();
       const opp = byInstant.get(ms) ?? { at: ms, atLocal: at.toISO()!, dates: [], rules: [] };
       if (!opp.dates.includes(t.date)) opp.dates.push(t.date);

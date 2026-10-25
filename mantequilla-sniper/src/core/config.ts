@@ -26,7 +26,8 @@ export const campaignSchema = z.object({
   }),
   partySize: z.number().int().min(1).max(20),
   release: z.object({
-    time: hhmm,
+    /** Horas locales candidatas de liberación (se prepara una ventana para cada una). */
+    times: z.array(hhmm).min(1),
     daysAheadCandidates: z.array(z.number().int().min(0).max(365)).min(1),
     note: z.string().optional(),
   }),

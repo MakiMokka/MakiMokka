@@ -8,6 +8,18 @@ El entorno donde se construyó el sistema **no tenía acceso de red a `restauran
 
 Para cerrar la Fase 1 hay que correr `npm run recon` desde una máquina o servidor con red (ver `README.md`). Ese paso genera el reporte real de estructura, red y políticas.
 
+## Verificado en la página real (24-oct-2026, 22:00 CDMX)
+
+- **Widget:** iframe `https://www.covermanager.com/reservation/module_restaurant/mantequilla-social-club/spanish`.
+- **Horizonte:** el último día abierto era el **1-nov** (hoy + 8 días); del 2-nov en adelante está en `close_date`. Del 24-oct al 1-nov todo está `complete` (agotado). Por eso el **martes 3-nov abre el lunes 26-oct**, a las 00:00 o a las 12:00. La hora exacta se confirma con `scripts/watch-release.ts`.
+- **Estados del calendario** (respuesta que recibe la página): `complete` = agotado, `close_date` = aún no abre.
+- **Horarios:** select `#hour-box-select`. Un día agotado muestra "Sold out, por favor elige otra fecha."
+- **Link oficial prellenado:** `?day=YYYY-MM-DD&people=2&hour=HH:MM&name=&lastname=&email=&phone=&intcallcode=52`.
+- **reCAPTCHA v3** (score mínimo 0.6) en el paso "Reservar". El navegador automatizado en la nube fue **rechazado** ("Invalid recaptcha activity"). No se evade: la reserva automática completa no es viable. Estrategia: el robot detecta en ~2 s y manda el link prellenado; la persona confirma desde su teléfono.
+- **Pagos:** el widget carga Stripe y MercadoPago y tiene plantillas de cancelación con cargo y retención. Falta ver si Mantequilla lo exige, porque solo aparece en un día con mesas.
+- **Lista de espera:** existe para comida y cena.
+- **Personas:** de 1 a 6; por defecto 2.
+
 ## Hallazgos (fuentes públicas)
 
 | Tema | Hallazgo | Fuente | Confianza |

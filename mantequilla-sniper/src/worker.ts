@@ -20,6 +20,7 @@ async function main(): Promise<void> {
   const clock = new SystemClock();
   const adapter = new CoverManagerAdapter({
     url: cfg.campaign.restaurant.url,
+    slug: cfg.campaign.restaurant.slug,
     timezone: cfg.campaign.restaurant.timezone,
     headless: cfg.headless,
     screenshotDir: join(cfg.stateDir, 'screens'),

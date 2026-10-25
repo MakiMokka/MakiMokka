@@ -12,12 +12,14 @@ function humanDate(iso: string) {
 function nextReleaseFromConfig(): string | null {
   const now = Date.now();
   const instants = campaign.targets.flatMap((t) =>
-    campaign.release.daysAheadCandidates.map((k) => {
-      // CDMX no tiene horario de verano desde 2022: UTC-6 fijo.
-      const d = new Date(`${t.date}T${campaign.release.time}:00-06:00`);
-      d.setUTCDate(d.getUTCDate() - k);
-      return d.getTime();
-    }),
+    campaign.release.daysAheadCandidates.flatMap((k) =>
+      campaign.release.times.map((time) => {
+        // CDMX no tiene horario de verano desde 2022: UTC-6 fijo.
+        const d = new Date(`${t.date}T${time}:00-06:00`);
+        d.setUTCDate(d.getUTCDate() - k);
+        return d.getTime();
+      }),
+    ),
   );
   const next = instants.filter((ms) => ms > now).sort((a, b) => a - b)[0];
   return next ? new Date(next).toISOString() : null;

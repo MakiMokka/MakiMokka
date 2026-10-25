@@ -40,17 +40,21 @@ describe('motor de preferencias', () => {
 });
 
 describe('calendario de aperturas', () => {
-  it('genera aperturas a mediodía CDMX para cada regla candidata', () => {
+  it('genera aperturas 8 días antes, a las 00:00 y a las 12:00 CDMX', () => {
     const cal = releaseCalendar(campaign);
-    expect(cal[0]!.atLocal).toBe('2026-11-02T12:00:00.000-06:00');
-    expect(cal.map((o) => o.atLocal.slice(0, 10))).toEqual(['2026-11-02', '2026-11-03', '2026-11-05', '2026-11-06', '2026-11-07', '2026-11-08']);
-    expect(cal.find((o) => o.atLocal.startsWith('2026-11-06'))!.dates).toEqual(['2026-11-06', '2026-11-07']);
+    expect(cal.map((o) => o.atLocal.slice(0, 16))).toEqual([
+      '2026-10-26T00:00', '2026-10-26T12:00', // mar 3
+      '2026-10-29T00:00', '2026-10-29T12:00', // vie 6
+      '2026-10-30T00:00', '2026-10-30T12:00', // sáb 7
+      '2026-10-31T00:00', '2026-10-31T12:00', // dom 8
+    ]);
+    expect(cal[1]!.dates).toEqual(['2026-11-03']);
   });
 
   it('la próxima apertura respeta la ventana en curso', () => {
-    expect(nextRelease(campaign, at('2026-11-02T12:01:00'))!.atLocal).toMatch(/^2026-11-02/);
-    expect(nextRelease(campaign, at('2026-11-02T12:10:00'))!.atLocal).toMatch(/^2026-11-03/);
-    expect(nextRelease(campaign, at('2026-11-09T12:10:00'))).toBeNull();
+    expect(nextRelease(campaign, at('2026-10-26T12:01:00'))!.atLocal).toMatch(/^2026-10-26T12/);
+    expect(nextRelease(campaign, at('2026-10-26T12:10:00'))!.atLocal).toMatch(/^2026-10-29T00/);
+    expect(nextRelease(campaign, at('2026-10-31T12:10:00'))).toBeNull();
   });
 
   it('el piso de frecuencia de consulta se impone', () => {
@@ -91,4 +95,22 @@ describe('normalización de horarios', () => {
     ['12:00 AM', '00:00'],
     ['hola', null],
   ])('%s → %s', (input, expected) => expect(normalizeTime(input)).toBe(expected));
+});
+
+describe('widget CoverManager (formato verificado)', () => {
+  it('link prellenado con fecha, personas, hora y datos', async () => {
+    const { prefilledLink } = await import('../src/adapters/covermanager/link.js');
+    const url = new URL(prefilledLink('mantequilla-social-club', { date: '2026-11-03', time: '20:30', partySize: 2 }, { fullName: 'Persona De Prueba', phone: '+52 55 1111 2222', email: 'p@example.com', partySize: 2, celebration: 'No' }));
+    expect(url.origin + url.pathname).toBe('https://www.covermanager.com/reservation/module_restaurant/mantequilla-social-club/spanish');
+    expect(Object.fromEntries(url.searchParams)).toEqual({ day: '2026-11-03', people: '2', hour: '20:30', name: 'Persona', lastname: 'De Prueba', email: 'p@example.com', phone: '5511112222', intcallcode: '52' });
+  });
+
+  it('interpreta la caja de horarios', async () => {
+    const { parseHourBox } = await import('../src/adapters/covermanager/adapter.js');
+    const sold = parseHourBox('2026-10-24', 2, "<label>Hora</label><div id='horas'><b>Sold out, por favor elige otra fecha.</b></div>", '');
+    expect(sold.status).toBe('SOLD_OUT');
+    const open = parseHourBox('2026-11-03', 2, '<select id="hour-box-select"><option value="-1">Hora</option><option value="20:30">20:30</option><option value="22:00" disabled>22:00</option></select>', '');
+    expect(open.status).toBe('AVAILABLE');
+    expect(open.slots.map((x) => `${x.time}:${x.status}`)).toEqual(['20:30:AVAILABLE', '22:00:SOLD_OUT']);
+  });
 });

@@ -6,10 +6,13 @@ import { errorMessage, type Logger } from '../../core/logger.js';
 import { normalizeTime } from '../../core/time.js';
 import type { BookingOutcome, DateAvailability, Guest, IsoDate, Slot, SlotStatus } from '../../core/types.js';
 import type { BookOptions, HealthResult, RestaurantAdapter } from '../types.js';
+import { prefilledLink, widgetUrl } from './link.js';
 import { CM, monthIndex } from './selectors.js';
 
 export interface CoverManagerOptions {
   url: string;
+  /** Slug del restaurante en CoverManager; activa la lectura verificada vía widget. */
+  slug?: string;
   timezone: string;
   headless: boolean;
   screenshotDir: string;
@@ -69,7 +72,7 @@ export class CoverManagerAdapter implements RestaurantAdapter {
 
   private async open(): Promise<void> {
     const page = this.requirePage();
-    const res = await page.goto(this.o.url, { waitUntil: 'domcontentloaded' });
+    const res = await page.goto(this.o.slug ? widgetUrl(this.o.slug) : this.o.url, { waitUntil: 'domcontentloaded' });
     this.lastStatus = res?.status() ?? null;
     await page.waitForLoadState('networkidle', { timeout: 10_000 }).catch(() => undefined);
   }
@@ -97,7 +100,10 @@ export class CoverManagerAdapter implements RestaurantAdapter {
   private async blocker(): Promise<Blocker | null> {
     const page = this.requirePage();
     if (this.lastStatus === 429) return { kind: 'rate_limited', detail: 'HTTP 429' };
-    if (page.frames().some((f) => CM.captchaFrameUrl.test(f.url()))) return { kind: 'captcha', detail: 'La página muestra un CAPTCHA/verificación' };
+    // reCAPTCHA v3 siempre carga un iframe invisible (size=invisible): eso no es un desafío visible.
+    if (page.frames().some((f) => CM.captchaFrameUrl.test(f.url()) && !/size=invisible/.test(f.url()))) {
+      return { kind: 'captcha', detail: 'La página muestra un CAPTCHA/verificación' };
+    }
     const text = await this.visibleText();
     if (CM.captchaText.test(text)) return { kind: 'captcha', detail: 'Verificación anti-bot visible' };
     if (CM.rateLimitText.test(text)) return { kind: 'rate_limited', detail: 'Mensaje de límite de solicitudes' };
@@ -133,7 +139,12 @@ export class CoverManagerAdapter implements RestaurantAdapter {
   async prepare(partySize: number): Promise<void> {
     await this.init();
     await this.open();
-    await this.selectPartySize(partySize);
+    // En el widget verificado las personas van en la URL de cada consulta (?people=).
+    if (!this.o.slug) await this.selectPartySize(partySize);
+  }
+
+  deepLink(slot: Slot, guest: Guest): string {
+    return this.o.slug ? prefilledLink(this.o.slug, slot, guest) : this.o.url;
   }
 
   // ---------- pasos del flujo ----------
@@ -229,9 +240,59 @@ export class CoverManagerAdapter implements RestaurantAdapter {
     return 'ok';
   }
 
+  /**
+   * Lectura de disponibilidad verificada contra la página real (24-oct-2026): para cada fecha se abre
+   * el widget con la preselección oficial (?day=&people=) y se leen las respuestas que la propia
+   * página recibe: /reservation/highlight (estado del día: "complete" = agotado, "close_date" = aún no
+   * abre) y /reservation/update_hours (select #hour-box-select con los horarios).
+   * Las fechas se consultan en paralelo para reaccionar en segundos tras la apertura.
+   */
   async checkDates(dates: IsoDate[], partySize: number): Promise<DateAvailability[]> {
-    const out: DateAvailability[] = [];
     await this.init();
+    if (this.o.slug) return Promise.all(dates.map((d) => this.checkViaWidget(d, partySize)));
+    return this.checkViaDom(dates, partySize);
+  }
+
+  private async checkViaWidget(date: IsoDate, partySize: number): Promise<DateAvailability> {
+    const checkedAt = new Date().toISOString();
+    const page = await this.context!.newPage();
+    let dayStatus: string | null = null;
+    let hourBox: string | null = null;
+    let httpError: number | null = null;
+    const [y, m, d] = date.split('-');
+    page.on('response', async (r) => {
+      const url = r.url();
+      if (r.status() === 429 || r.status() >= 500) httpError = r.status();
+      if (url.includes('/reservation/highlight')) {
+        const body = (await r.json().catch(() => null)) as Record<string, [boolean, string]> | null;
+        if (body && body[date]) dayStatus = body[date][1] ?? '';
+      } else if (url.includes('/reservation/update_hours') && (r.request().postData() ?? '').includes(`dia=${d}-${m}-${y}`)) {
+        const body = (await r.json().catch(() => null)) as { hour_box?: string } | null;
+        if (body?.hour_box !== undefined) hourBox = body.hour_box;
+      }
+    });
+    try {
+      const url = `${widgetUrl(this.o.slug!)}?day=${date}&people=${partySize}`;
+      await page.goto(url, { waitUntil: 'domcontentloaded' });
+      const deadline = Date.now() + 12_000;
+      while (Date.now() < deadline && (dayStatus === null || (dayStatus !== 'close_date' && dayStatus !== 'complete' && hourBox === null))) {
+        await page.waitForTimeout(100);
+      }
+      if (httpError === 429) return { date, status: 'ERROR', slots: [], checkedAt, detail: 'rate_limited: HTTP 429' };
+      if (dayStatus === 'close_date') return { date, status: 'NOT_YET_RELEASED', slots: [], checkedAt };
+      if (dayStatus === 'complete' && hourBox === null) return { date, status: 'SOLD_OUT', slots: [], checkedAt };
+      if (hourBox === null) return { date, status: 'UNKNOWN', slots: [], checkedAt, detail: `Sin respuesta de horarios (día: ${dayStatus ?? 'sin dato'}${httpError ? `, HTTP ${httpError}` : ''})` };
+      return parseHourBox(date, partySize, hourBox, checkedAt);
+    } catch (err) {
+      return { date, status: 'ERROR', slots: [], checkedAt, detail: errorMessage(err) };
+    } finally {
+      await page.close().catch(() => undefined);
+    }
+  }
+
+  /** Lectura genérica por DOM (otros restaurantes/plantillas). */
+  private async checkViaDom(dates: IsoDate[], partySize: number): Promise<DateAvailability[]> {
+    const out: DateAvailability[] = [];
     const b = await this.blocker();
     if (b) {
       const status: SlotStatus = 'ERROR';
@@ -278,17 +339,21 @@ export class CoverManagerAdapter implements RestaurantAdapter {
   async book(slot: Slot, guest: Guest, opts: BookOptions): Promise<BookingOutcome> {
     try {
       await this.init();
-      await this.open();
-      await this.selectPartySize(guest.partySize);
-      const sel = await this.selectDate(slot.date);
-      if (sel !== 'ok') return { kind: 'SLOT_GONE', detail: 'El día ya no es seleccionable' };
-      const { slots } = await this.readSlots(slot.date, guest.partySize);
-      const current = slots.find((s) => s.time === slot.time);
-      if (!current || current.status !== 'AVAILABLE') return { kind: 'SLOT_GONE', detail: 'El horario ya no está disponible' };
-
+      if (this.o.slug) {
+        const pre = await this.startViaWidget(slot, guest);
+        if (pre) return pre;
+      } else {
+        await this.open();
+        await this.selectPartySize(guest.partySize);
+        const sel = await this.selectDate(slot.date);
+        if (sel !== 'ok') return { kind: 'SLOT_GONE', detail: 'El día ya no es seleccionable' };
+        const { slots } = await this.readSlots(slot.date, guest.partySize);
+        const current = slots.find((s) => s.time === slot.time);
+        if (!current || current.status !== 'AVAILABLE') return { kind: 'SLOT_GONE', detail: 'El horario ya no está disponible' };
+        await this.root().locator('button, a, li, [role="option"], [role="radio"], label, span').filter({ hasText: CM.timeText }).filter({ hasText: current.handle ?? slot.time }).first().click();
+        await this.clickIfPresent(CM.continueButton);
+      }
       const root = this.root();
-      await root.locator('button, a, li, [role="option"], [role="radio"], label, span').filter({ hasText: CM.timeText }).filter({ hasText: current.handle ?? slot.time }).first().click();
-      await this.clickIfPresent(CM.continueButton);
 
       const blocker = await this.blocker();
       if (blocker?.kind === 'captcha') return { kind: 'HUMAN_ACTION_REQUIRED', reason: blocker.detail };
@@ -324,6 +389,44 @@ export class CoverManagerAdapter implements RestaurantAdapter {
     } catch (err) {
       await this.screenshot(`book-${slot.date}-${slot.time.replace(':', '')}`);
       return { kind: 'FAILED', error: errorMessage(err) };
+    }
+  }
+
+  /**
+   * Paso 1 en el widget real: abre el link oficial prefijado (fecha, personas, hora, datos) y pulsa
+   * "Reservar". CoverManager valida reCAPTCHA v3 en ese paso; si lo rechaza, se requiere a una persona.
+   * Devuelve null si se puede seguir con el formulario.
+   */
+  private async startViaWidget(slot: Slot, guest: Guest): Promise<BookingOutcome | null> {
+    const page = this.requirePage();
+    let step: { resp?: number; error_text?: string } | null = null;
+    const onResponse = async (r: Response) => {
+      if (r.url().includes('/reservs/avaible_reserv_module')) step = (await r.json().catch(() => ({}))) as typeof step;
+    };
+    page.on('response', onResponse);
+    try {
+      await page.goto(prefilledLink(this.o.slug!, slot, guest), { waitUntil: 'networkidle' });
+      const hour = page.locator('#hour-box-select');
+      if ((await hour.count()) === 0) return { kind: 'SLOT_GONE', detail: 'No hay horarios para la fecha' };
+      if ((await hour.inputValue().catch(() => '')) !== slot.time) {
+        const ok = await hour.selectOption(slot.time).then(() => true).catch(() => false);
+        if (!ok) return { kind: 'SLOT_GONE', detail: `El horario ${slot.time} ya no aparece` };
+      }
+      await page.locator('input.reservarButton.step1').click();
+      const deadline = Date.now() + 10_000;
+      while (!step && Date.now() < deadline) await page.waitForTimeout(100);
+      const res = step as { resp?: number; error_text?: string } | null;
+      if (res?.error_text && /recaptcha/i.test(res.error_text)) {
+        return { kind: 'HUMAN_ACTION_REQUIRED', reason: 'reCAPTCHA de CoverManager rechazó el navegador automatizado; reserva desde el link prellenado' };
+      }
+      if (res && res.resp === 0) {
+        const text = res.error_text ?? '';
+        return CM.slotGoneText.test(text) || CM.noAvailability.test(text) ? { kind: 'SLOT_GONE', detail: text } : { kind: 'HUMAN_ACTION_REQUIRED', reason: `CoverManager respondió: ${text || 'error sin detalle'}` };
+      }
+      if (!res) return { kind: 'FAILED', error: 'El paso "Reservar" no respondió' };
+      return null;
+    } finally {
+      page.off('response', onResponse);
     }
   }
 
@@ -452,4 +555,25 @@ export class CoverManagerAdapter implements RestaurantAdapter {
       this.o.log.warn('No se pudo tomar captura', { err: errorMessage(err) });
     }
   }
+}
+
+/** Interpreta el HTML de horarios que devuelve /reservation/update_hours. */
+export function parseHourBox(date: IsoDate, partySize: number, html: string, checkedAt: string): DateAvailability {
+  const waitlist = CM.waitlist.test(html);
+  const slots: Slot[] = [];
+  const seen = new Set<string>();
+  for (const m of html.matchAll(/<option\b([^>]*)>([^<]*)<\/option>/gi)) {
+    const attrs = m[1] ?? '';
+    const value = attrs.match(/value=["']([^"']*)["']/i)?.[1] ?? '';
+    const time = normalizeTime(value) ?? normalizeTime(m[2] ?? '');
+    if (!time || seen.has(time)) continue;
+    seen.add(time);
+    const disabled = /\bdisabled\b/i.test(attrs) || CM.disabledClass.test(attrs);
+    slots.push({ date, time, partySize, status: disabled ? 'SOLD_OUT' : 'AVAILABLE', handle: time });
+  }
+  const soldOutText = /sold out|agotad|no hay disponibilidad|sin disponibilidad|completo/i.test(html);
+  const any = slots.some((x) => x.status === 'AVAILABLE');
+  const status: SlotStatus = any ? 'AVAILABLE' : slots.length > 0 || soldOutText ? 'SOLD_OUT' : 'UNKNOWN';
+  const detail = [waitlist ? 'lista de espera visible' : '', status === 'UNKNOWN' ? 'formato de horarios no reconocido' : ''].filter(Boolean).join('; ');
+  return { date, status, slots, checkedAt, detail: detail || undefined };
 }

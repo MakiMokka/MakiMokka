@@ -100,7 +100,7 @@ describe('Escenarios de reservación', () => {
   });
 
   it('8. la sesión expira antes de la apertura → notifica, reinicia y reserva al abrir', async () => {
-    const opp = releaseCalendar(harness().campaign)[0]!; // lun 2 nov 12:00 → mar 3
+    const opp = releaseCalendar(harness().campaign)[0]!; // lun 26 oct 00:00 → mar 3
     const h = harness({ now: opp.at - 200_000 });
     let healthCalls = 0;
     h.adapter.healthCheck = async () =>

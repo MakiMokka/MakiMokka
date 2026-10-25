@@ -68,7 +68,7 @@ export default async function Settings() {
 
       <h2>Apertura de reservaciones</h2>
       <div className="card stack">
-        <div className="row"><span className="label">Hora</span><span>{campaign.release.time} · {campaign.restaurant.timezone}</span></div>
+        <div className="row"><span className="label">Hora</span><span>{campaign.release.times.join(' o ')} · {campaign.restaurant.timezone}</span></div>
         <div className="row"><span className="label">Días de anticipación (candidatos)</span><span>{campaign.release.daysAheadCandidates.join(', ')}</span></div>
         <p className="sub">{campaign.release.note}</p>
         <p className="sub">Para cambiarlos edita config/mantequilla.json y vuelve a desplegar el worker.</p>

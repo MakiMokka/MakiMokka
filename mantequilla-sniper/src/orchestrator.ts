@@ -197,7 +197,7 @@ export class Orchestrator {
         type: 'AVAILABILITY_FOUND',
         title: 'Disponibilidad encontrada',
         body: fresh.map((c) => `${c.target.label} ${c.slot.time}`).join(' · '),
-        url: cfg.campaign.restaurant.url,
+        url: this.d.adapter.deepLink?.(fresh[0]!.slot, cfg.guest) ?? cfg.campaign.restaurant.url,
         urgent: true,
         data: { slots: fresh.map((c) => slotKey(c.slot)) },
       });

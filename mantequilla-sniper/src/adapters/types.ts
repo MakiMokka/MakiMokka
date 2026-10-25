@@ -30,5 +30,7 @@ export interface RestaurantAdapter {
   healthCheck(): Promise<HealthResult>;
   checkDates(dates: IsoDate[], partySize: number): Promise<DateAvailability[]>;
   book(slot: Slot, guest: Guest, opts: BookOptions): Promise<BookingOutcome>;
+  /** Link para que una persona complete esta reserva en su navegador (prellenado si la plataforma lo permite). */
+  deepLink?(slot: Slot, guest: Guest): string;
   close(): Promise<void>;
 }
