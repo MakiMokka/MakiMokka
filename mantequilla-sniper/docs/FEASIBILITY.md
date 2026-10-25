@@ -52,3 +52,14 @@ Para cerrar la Fase 1 hay que correr `npm run recon` desde una máquina o servid
 - [ ] Confirmar si se pide tarjeta de garantía o depósito y si hay CAPTCHA.
 - [ ] Ajustar `src/adapters/covermanager/selectors.ts` a lo observado y ejecutar el dry run del formulario.
 - [ ] Revisar las condiciones de uso de CoverManager sobre reservas automatizadas antes de activar AUTO.
+
+## Resultado (25-oct-2026, 12:00 CDMX)
+
+Cecilia consiguió una reserva real usando el link prellenado desde su iPhone: **domingo 1-nov-2026, 20:30, 2 personas**. Se liberó una mesa (probablemente una cancelación) y el widget la tomó como fecha por defecto, porque el 2-nov estaba cerrado. Decidió quedársela, así que la búsqueda se detuvo, según la regla de una sola reserva.
+
+El flujo real, sin tarjeta:
+1. Fecha / hora / personas → **Reservar** (aquí valida reCAPTCHA v3).
+2. Adultos 2 / Niños 0 → **Reservar**.
+3. "¿Celebran alguna ocasión especial?" (texto libre) → "No" → **Reservar**.
+4. Datos personales (ya prellenados por el link) → marcar "Acepto el Tratamiento de Datos y Política de Privacidad" → **RESERVAR**.
+5. "Gracias por reservar en Mantequilla Social Club. Recibirá en breve un email de confirmación."
