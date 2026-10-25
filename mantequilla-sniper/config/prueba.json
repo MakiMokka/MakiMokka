@@ -10,13 +10,12 @@
   "partySize": 2,
   "release": {
     "times": [
-      "00:00",
       "12:00"
     ],
     "daysAheadCandidates": [
       8
     ],
-    "note": "ENSAYO: se observa la apertura del 2-nov sin enviar. Verificado 24-oct-2026 22:09 CDMX en la página real: el último día abierto era el 1-nov (8 días). Hora de liberación por confirmar entre 00:00 y 12:00 (scripts/watch-release.ts); se vigilan ambas."
+    "note": "ENSAYO: se observa la apertura del 2-nov sin enviar. Verificado 24-oct-2026 22:09 CDMX en la página real: el último día abierto era el 1-nov (8 días). Liberación a las 12:00 CDMX (confirmado por Cecilia)."
   },
   "polling": {
     "minIntervalMs": 3000,

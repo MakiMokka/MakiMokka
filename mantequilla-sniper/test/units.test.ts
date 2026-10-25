@@ -40,20 +40,15 @@ describe('motor de preferencias', () => {
 });
 
 describe('calendario de aperturas', () => {
-  it('genera aperturas 8 días antes, a las 00:00 y a las 12:00 CDMX', () => {
+  it('genera aperturas 8 días antes a las 12:00 CDMX', () => {
     const cal = releaseCalendar(campaign);
-    expect(cal.map((o) => o.atLocal.slice(0, 16))).toEqual([
-      '2026-10-26T00:00', '2026-10-26T12:00', // mar 3
-      '2026-10-29T00:00', '2026-10-29T12:00', // vie 6
-      '2026-10-30T00:00', '2026-10-30T12:00', // sáb 7
-      '2026-10-31T00:00', '2026-10-31T12:00', // dom 8
-    ]);
-    expect(cal[1]!.dates).toEqual(['2026-11-03']);
+    expect(cal.map((o) => o.atLocal.slice(0, 16))).toEqual(['2026-10-26T12:00', '2026-10-29T12:00', '2026-10-30T12:00', '2026-10-31T12:00']);
+    expect(cal[0]!.dates).toEqual(['2026-11-03']);
   });
 
   it('la próxima apertura respeta la ventana en curso', () => {
     expect(nextRelease(campaign, at('2026-10-26T12:01:00'))!.atLocal).toMatch(/^2026-10-26T12/);
-    expect(nextRelease(campaign, at('2026-10-26T12:10:00'))!.atLocal).toMatch(/^2026-10-29T00/);
+    expect(nextRelease(campaign, at('2026-10-26T12:10:00'))!.atLocal).toMatch(/^2026-10-29T12/);
     expect(nextRelease(campaign, at('2026-10-31T12:10:00'))).toBeNull();
   });
 
